@@ -72,7 +72,7 @@ export class MenuScene extends Phaser.Scene {
 
     // Transición directa para evitar problemas con camera fade doble
     this.input.keyboard!.once('keydown-SPACE', () => {
-      this.scene.start(SCENES.GAME, { levelId: 'level1' });
+      this.scene.start(SCENES.GAME, { levelId: 'level1', lives: GAME.MAX_LIVES });
     });
   }
 }

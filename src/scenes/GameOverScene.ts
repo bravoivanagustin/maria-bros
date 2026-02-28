@@ -36,12 +36,16 @@ export class GameOverScene extends Phaser.Scene {
         stroke: '#000000',
         strokeThickness: 2,
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
+
+    // Zone provides a reliable click target independent of font bounds
+    const retryZone = this.add
+      .zone(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 30, 200, 20)
       .setInteractive({ useHandCursor: true });
 
-    retryBtn.on('pointerover', () => retryBtn.setColor('#ff6666'));
-    retryBtn.on('pointerout', () => retryBtn.setColor('#ffffff'));
-    retryBtn.on('pointerdown', () => this.retry());
+    retryZone.on('pointerover', () => retryBtn.setColor('#ff6666'));
+    retryZone.on('pointerout',  () => retryBtn.setColor('#ffffff'));
+    retryZone.on('pointerdown', () => { this.retry(); });
 
     const menuBtn = this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 52, '[ Menu principal ]', {
@@ -51,16 +55,19 @@ export class GameOverScene extends Phaser.Scene {
         stroke: '#000000',
         strokeThickness: 1,
       })
-      .setOrigin(0.5)
+      .setOrigin(0.5);
+
+    const menuZone = this.add
+      .zone(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 52, 180, 20)
       .setInteractive({ useHandCursor: true });
 
-    menuBtn.on('pointerover', () => menuBtn.setColor('#ffffff'));
-    menuBtn.on('pointerout', () => menuBtn.setColor('#aaaaaa'));
-    menuBtn.on('pointerdown', () => this.goToMenu());
+    menuZone.on('pointerover', () => menuBtn.setColor('#ffffff'));
+    menuZone.on('pointerout',  () => menuBtn.setColor('#aaaaaa'));
+    menuZone.on('pointerdown', () => { this.goToMenu(); });
 
-    this.input.keyboard!.once('keydown-SPACE', () => this.retry());
-    this.input.keyboard!.once('keydown-ENTER', () => this.retry());
-    this.input.keyboard!.once('keydown-ESC',   () => this.goToMenu());
+    this.input.keyboard!.once('keydown-SPACE', () => { this.retry(); });
+    this.input.keyboard!.once('keydown-ENTER', () => { this.retry(); });
+    this.input.keyboard!.once('keydown-ESC',   () => { this.goToMenu(); });
 
     this.cameras.main.fadeIn(500);
   }
@@ -68,7 +75,7 @@ export class GameOverScene extends Phaser.Scene {
   private retry(): void {
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start(SCENES.GAME, { levelId: 'level1' });
+      this.scene.start(SCENES.GAME, { levelId: 'level1', lives: GAME.MAX_LIVES });
     });
   }
 

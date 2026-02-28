@@ -2,11 +2,12 @@ import { EVENTS, GAME } from '../utils/constants';
 
 export class ScoreSystem {
   private score: number = 0;
-  private lives: number = GAME.MAX_LIVES;
+  private lives: number;
   private timeRemaining: number;
   private timeExpired: boolean = false;
 
-  constructor(private scene: Phaser.Scene, timeLimit: number) {
+  constructor(private scene: Phaser.Scene, timeLimit: number, initialLives: number = GAME.MAX_LIVES) {
+    this.lives = initialLives;
     this.timeRemaining = timeLimit;
     this.scene.events.on(EVENTS.COIN_COLLECTED, this.onCoinCollected, this);
     this.scene.events.on(EVENTS.PLAYER_DIED, this.onPlayerDied, this);

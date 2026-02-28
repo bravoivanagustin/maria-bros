@@ -1,4 +1,4 @@
-import { EVENTS, SCENES } from '../utils/constants';
+import { EVENTS, GAME, SCENES } from '../utils/constants';
 import { InputSystem } from '../systems/InputSystem';
 import { AudioSystem } from '../systems/AudioSystem';
 import { CameraSystem } from '../systems/CameraSystem';
@@ -38,6 +38,7 @@ export class GameScene extends Phaser.Scene {
 
   // Estado
   private isTransitioning: boolean = false;
+  private initialLives: number = GAME.MAX_LIVES;
 
   constructor() {
     super({ key: SCENES.GAME });
@@ -47,6 +48,7 @@ export class GameScene extends Phaser.Scene {
     const levelId = data.levelId ?? 'level1';
     this.levelConfig = LevelRegistry.getLevel(levelId);
     this.isTransitioning = false;
+    this.initialLives = data.lives ?? GAME.MAX_LIVES;
   }
 
   create(): void {
@@ -110,7 +112,7 @@ export class GameScene extends Phaser.Scene {
 
   private createSystems(): void {
     this.inputSystem = new InputSystem(this);
-    this.scoreSystem = new ScoreSystem(this, this.levelConfig.timeLimit);
+    this.scoreSystem = new ScoreSystem(this, this.levelConfig.timeLimit, this.initialLives);
     this.audioSystem = new AudioSystem(this);
     this.cameraSystem = new CameraSystem(this);
     this.collisionSystem = new CollisionSystem(this);
@@ -162,11 +164,12 @@ export class GameScene extends Phaser.Scene {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
-    // Dejar de seguir a María para que se vea cómo cae fuera del mapa
     this.cameras.main.stopFollow();
     this.time.delayedCall(2000, () => {
+      const lives = this.scoreSystem.getLives();
       this.audioSystem.stopMusic();
-      this.scene.restart({ levelId: this.levelConfig.id });
+      this.scoreSystem.destroy();
+      this.scene.restart({ levelId: this.levelConfig.id, lives });
     });
   }
 
@@ -177,6 +180,7 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.shake(500, 0.02);
     this.time.delayedCall(2500, () => {
       this.audioSystem.stopMusic();
+      this.scoreSystem.destroy();
       this.cameras.main.fadeOut(300, 0, 0, 0);
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
         this.scene.start(SCENES.GAME_OVER);
@@ -190,10 +194,12 @@ export class GameScene extends Phaser.Scene {
 
     this.time.delayedCall(800, () => {
       this.audioSystem.stopMusic();
+      const score = this.scoreSystem.getScore();
+      this.scoreSystem.destroy();
       this.cameras.main.fadeOut(400, 255, 255, 255);
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
         this.scene.start(SCENES.WIN, {
-          score: this.scoreSystem.getScore(),
+          score,
           levelId: this.levelConfig.id,
         });
       });

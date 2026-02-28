@@ -1,0 +1,77 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "bloques.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "level1.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 536,
+                "y": 232.5
+            }
+        },
+        "montañas.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "nubes.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "poste.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
+    "last.imagePath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
+    "map.height": 14,
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": "2",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 60,
+    "openFiles": [
+        "level1.tmx",
+        "bloques.tsx",
+        "tileset.tsx",
+        "nubes.tsx",
+        "nubes.tsx",
+        "nubes.tsx",
+        "montañas.tsx",
+        "poste.tsx"
+    ],
+    "project": "maria.tiled-project",
+    "recentFiles": [
+        "poste.tsx",
+        "montañas.tsx",
+        "nubes.tsx",
+        "tileset.tsx",
+        "bloques.tsx",
+        "level1.tmx"
+    ],
+    "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#0c45b0",
+    "tileset.useTransparentColor": false
+}

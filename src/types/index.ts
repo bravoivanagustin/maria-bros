@@ -51,4 +51,5 @@ export interface LevelConfig {
 export interface SceneTransitionData {
   levelId?: string;
   score?: number;
+  lives?: number;
 }
