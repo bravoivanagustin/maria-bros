@@ -8,6 +8,7 @@ export class Coin extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this, true); // true = static body
+    this.setDepth(2);
 
     const body = this.body as Phaser.Physics.Arcade.StaticBody;
     body.setSize(10, 10);

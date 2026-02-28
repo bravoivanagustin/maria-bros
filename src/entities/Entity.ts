@@ -12,5 +12,6 @@ export class Entity extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture, frame);
     scene.add.existing(this);
     scene.physics.add.existing(this);
+    this.setDepth(2); // personajes y enemigos delante del tilemap y los bloques
   }
 }

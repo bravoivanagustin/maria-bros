@@ -14,6 +14,8 @@ export class CoinBlock extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this, false); // cuerpo dinámico
 
+    this.setDepth(1); // detrás de personajes (depth 2), delante del tilemap (depth 0)
+
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setImmovable(true);
     body.allowGravity = false;
@@ -59,6 +61,7 @@ export class CoinBlock extends Phaser.Physics.Arcade.Sprite {
 
   private spawnCoinPopup(): void {
     const coin = this.scene.add.rectangle(this.x, this.y - 8, 8, 8, 0xffdd00);
+    coin.setDepth(3);
 
     this.scene.tweens.add({
       targets: coin,

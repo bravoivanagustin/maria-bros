@@ -74,14 +74,11 @@ export class CollisionSystem {
         if (!block.isActive) return;
 
         const mariaBod = (playerObj as Maria).body as Phaser.Physics.Arcade.Body;
-        const blockBod = block.body as Phaser.Physics.Arcade.Body;
 
-        // Golpe desde abajo: María va hacia arriba y su centro está debajo del bloque
-        const isBottomHit =
-          mariaBod.velocity.y < 0 &&
-          mariaBod.y + mariaBod.height / 2 > blockBod.y + blockBod.height / 2;
-
-        if (isBottomHit) {
+        // Golpe desde abajo: la cabeza de María quedó bloqueada por el bloque.
+        // Se usa blocked.up porque velocity.y ya fue reseteada a 0 por Phaser
+        // antes de invocar este callback.
+        if (mariaBod.blocked.up) {
           block.hit();
         }
       },

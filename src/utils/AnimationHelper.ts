@@ -37,18 +37,18 @@ export class AnimationHelper {
   }
 
   private static createGoombaAnims(anims: Phaser.Animations.AnimationManager): void {
-    // Spritesheet: walk(0-1) dead(2-3)
+    // Spritesheet: walk(0-2) dead(3-5)
     anims.create({
       key: ANIMS.GOOMBA_WALK,
-      frames: anims.generateFrameNumbers(ASSETS.ENEMY_GOOMBA, { start: 0, end: 1 }),
+      frames: anims.generateFrameNumbers(ASSETS.ENEMY_GOOMBA, { start: 0, end: 2 }),
       frameRate: 6,
       repeat: -1,
     });
     anims.create({
       key: ANIMS.GOOMBA_DEAD,
-      frames: anims.generateFrameNumbers(ASSETS.ENEMY_GOOMBA, { start: 2, end: 3 }),
-      frameRate: 4,
-      repeat: 0,
+      frames: anims.generateFrameNumbers(ASSETS.ENEMY_GOOMBA, { start: 3, end: 5 }),
+      frameRate: 6,
+      repeat: -1,
     });
   }
 

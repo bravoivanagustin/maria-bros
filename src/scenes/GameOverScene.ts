@@ -44,7 +44,7 @@ export class GameOverScene extends Phaser.Scene {
     retryBtn.on('pointerdown', () => this.retry());
 
     const menuBtn = this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 44, '[ Menu principal ]', {
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 52, '[ Menu principal ]', {
         fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#aaaaaa',
@@ -60,6 +60,7 @@ export class GameOverScene extends Phaser.Scene {
 
     this.input.keyboard!.once('keydown-SPACE', () => this.retry());
     this.input.keyboard!.once('keydown-ENTER', () => this.retry());
+    this.input.keyboard!.once('keydown-ESC',   () => this.goToMenu());
 
     this.cameras.main.fadeIn(500);
   }

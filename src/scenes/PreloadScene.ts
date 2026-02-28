@@ -16,6 +16,14 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image('maria-corriendo-3', 'assets/sprites/player/maria-corriendo-3.png');
     this.load.image('maria-saltando',    'assets/sprites/player/maria-saltando.png');
     this.load.image('maria-perdio',      'assets/sprites/player/maria-perdio.png');
+
+    // Frames reales del gato enemigo — se componen en buildGoombaTexture()
+    this.load.image('gato-malo-1',  'assets/sprites/enemies/gato-malo-1.png');
+    this.load.image('gato-malo-2',  'assets/sprites/enemies/gato-malo-2.png');
+    this.load.image('gato-malo-3',  'assets/sprites/enemies/gato-malo-3.png');
+    this.load.image('gato-bueno-1', 'assets/sprites/enemies/gato-bueno-1.png');
+    this.load.image('gato-bueno-2', 'assets/sprites/enemies/gato-bueno-2.png');
+    this.load.image('gato-bueno-3', 'assets/sprites/enemies/gato-bueno-3.png');
   }
 
   create(): void {
@@ -31,7 +39,7 @@ export class PreloadScene extends Phaser.Scene {
 
   private generatePlaceholderTextures(): void {
     this.buildMariaTexture();
-    this.generateGoombaTexture();
+    this.buildGoombaTexture();
     this.generateCoinTexture();
     this.generateAgustinTexture();
     this.generateTilesetTexture();
@@ -69,8 +77,35 @@ export class PreloadScene extends Phaser.Scene {
     tex.refresh();
   }
 
-  // Goomba: 4 frames × 16×16 = 64×16 px
-  // walk(0-1) dead(2-3)
+  // Gato enemigo: 6 frames × 16×16 = 96×16 px
+  // walk(0-2) = gato-malo-1/2/3.png  |  dead(3-5) = gato-bueno-1/2/3.png
+  private buildGoombaTexture(): void {
+    const F = 16;
+    const frames: string[] = [
+      'gato-malo-1',   // 0 - caminando A
+      'gato-malo-2',   // 1 - caminando B
+      'gato-malo-3',   // 2 - caminando C
+      'gato-bueno-1',  // 3 - aplastado A
+      'gato-bueno-2',  // 4 - aplastado B
+      'gato-bueno-3',  // 5 - aplastado C
+    ];
+
+    const tex = this.textures.createCanvas(ASSETS.ENEMY_GOOMBA, F * 6, F)!;
+    const ctx = tex.getContext() as CanvasRenderingContext2D;
+
+    for (let i = 0; i < frames.length; i++) {
+      const src = this.textures.get(frames[i]).getSourceImage() as HTMLImageElement;
+      ctx.drawImage(src, 0, 0, src.width, src.height, i * F, 0, F, F);
+    }
+
+    for (let i = 0; i < 6; i++) {
+      tex.add(i, 0, i * F, 0, F, F);
+    }
+    tex.refresh();
+  }
+
+  // Goomba placeholder — ya no se usa, se reemplazó por buildGoombaTexture()
+  // Mantenido como referencia visual del layout de frames.
   private generateGoombaTexture(): void {
     const gfx = this.make.graphics();
 
