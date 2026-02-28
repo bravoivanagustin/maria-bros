@@ -7,99 +7,72 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Solo cargamos el JSON del tilemap — las texturas se generan en create()
     this.load.tilemapTiledJSON(ASSETS.LEVEL1_MAP, 'assets/tilemaps/levels/level1.json');
+
+    // Frames reales de María — se componen en buildMariaTexture()
+    this.load.image('maria-quieta',      'assets/sprites/player/maria-quieta.png');
+    this.load.image('maria-corriendo-1', 'assets/sprites/player/maria-corriendo-1.png');
+    this.load.image('maria-corriendo-2', 'assets/sprites/player/maria-corriendo-2.png');
+    this.load.image('maria-corriendo-3', 'assets/sprites/player/maria-corriendo-3.png');
+    this.load.image('maria-saltando',    'assets/sprites/player/maria-saltando.png');
+    this.load.image('maria-perdio',      'assets/sprites/player/maria-perdio.png');
   }
 
   create(): void {
     this.generatePlaceholderTextures();
     AnimationHelper.createAll(this.anims);
-    this.scene.start(SCENES.MENU);
+    // Esperar que la fuente pixel art cargue antes de mostrar texto
+    document.fonts.load('10px "Press Start 2P"').then(() => {
+      this.scene.start(SCENES.MENU);
+    }).catch(() => {
+      this.scene.start(SCENES.MENU);
+    });
   }
 
   private generatePlaceholderTextures(): void {
-    this.generateMariaTexture();
+    this.buildMariaTexture();
     this.generateGoombaTexture();
     this.generateCoinTexture();
     this.generateAgustinTexture();
     this.generateTilesetTexture();
+    this.generateFlagZoneTexture();
+    this.generateCoinBlockTexture();
   }
 
-  // María: 10 frames × 16×16 = 160×16 px
-  // idle(0-1) walk(2-5) jump(6) death(7-9)
-  private generateMariaTexture(): void {
-    const gfx = this.make.graphics({ add: false });
+  // María: 6 frames × 16×16 = 96×16 px
+  // idle(0) walk(1-3) jump(4) perdio(5)
+  private buildMariaTexture(): void {
+    const F = 16; // frame size
 
-    for (let i = 0; i < 10; i++) {
-      const fx = i * 16;
+    const realFrames: string[] = [
+      'maria-quieta',       // 0 - idle
+      'maria-corriendo-1',  // 1 - walk
+      'maria-corriendo-2',  // 2 - walk
+      'maria-corriendo-3',  // 3 - walk
+      'maria-saltando',     // 4 - jump
+      'maria-perdio',       // 5 - death
+    ];
 
-      // Cuerpo base (rosa)
-      gfx.fillStyle(0xff69b4);
-      gfx.fillRect(fx + 3, 5, 10, 9);
+    const tex = this.textures.createCanvas(ASSETS.PLAYER, F * 6, F)!;
+    const ctx = tex.getContext() as CanvasRenderingContext2D;
 
-      // Pelo (marrón oscuro)
-      gfx.fillStyle(0x5c2a00);
-      gfx.fillRect(fx + 2, 1, 12, 5);
-
-      // Cara (piel)
-      gfx.fillStyle(0xffe0bd);
-      gfx.fillRect(fx + 4, 3, 8, 5);
-
-      // Ojos
-      if (i >= 7) {
-        // Death: X eyes
-        gfx.fillStyle(0x000000);
-        gfx.fillRect(fx + 5, 4, 2, 1);
-        gfx.fillRect(fx + 5, 6, 2, 1);
-        gfx.fillRect(fx + 9, 4, 2, 1);
-        gfx.fillRect(fx + 9, 6, 2, 1);
-        // Gris tono muerte
-        gfx.fillStyle(0x888888);
-        gfx.fillRect(fx + 3, 5, 10, 9);
-        gfx.fillStyle(0xffd0a0);
-        gfx.fillRect(fx + 4, 3, 8, 5);
-        gfx.fillStyle(0x000000);
-        gfx.fillRect(fx + 5, 4, 2, 2);
-        gfx.fillRect(fx + 9, 4, 2, 2);
-      } else {
-        gfx.fillStyle(0x000000);
-        gfx.fillRect(fx + 5, 5, 2, 2);
-        gfx.fillRect(fx + 9, 5, 2, 2);
-      }
-
-      // Piernas (azul para walk frames)
-      if (i >= 2 && i <= 5) {
-        const legOffset = (i % 2 === 0) ? 1 : -1;
-        gfx.fillStyle(0x3a5bbf);
-        gfx.fillRect(fx + 4, 13 + legOffset, 3, 3);
-        gfx.fillRect(fx + 9, 13 - legOffset, 3, 3);
-      } else {
-        gfx.fillStyle(0x3a5bbf);
-        gfx.fillRect(fx + 4, 13, 3, 3);
-        gfx.fillRect(fx + 9, 13, 3, 3);
-      }
-
-      // Jump: brazos arriba
-      if (i === 6) {
-        gfx.fillStyle(0xff69b4);
-        gfx.fillRect(fx + 1, 5, 2, 4);
-        gfx.fillRect(fx + 13, 5, 2, 4);
-      }
+    // Dibujar los 6 frames reales, escalando cada uno a 16×16
+    for (let i = 0; i < realFrames.length; i++) {
+      const src = this.textures.get(realFrames[i]).getSourceImage() as HTMLImageElement;
+      ctx.drawImage(src, 0, 0, src.width, src.height, i * F, 0, F, F);
     }
 
-    gfx.generateTexture(ASSETS.PLAYER, 160, 16);
-    gfx.destroy();
-    // Registrar los 10 frames de 16×16 para que generateFrameNumbers() los encuentre
-    const mariaTex = this.textures.get(ASSETS.PLAYER);
-    for (let i = 0; i < 10; i++) {
-      mariaTex.add(i, 0, i * 16, 0, 16, 16);
+    // Registrar los 6 frames en la textura
+    for (let i = 0; i < 6; i++) {
+      tex.add(i, 0, i * F, 0, F, F);
     }
+    tex.refresh();
   }
 
   // Goomba: 4 frames × 16×16 = 64×16 px
   // walk(0-1) dead(2-3)
   private generateGoombaTexture(): void {
-    const gfx = this.make.graphics({ add: false });
+    const gfx = this.make.graphics();
 
     for (let i = 0; i < 4; i++) {
       const fx = i * 16;
@@ -151,7 +124,7 @@ export class PreloadScene extends Phaser.Scene {
 
   // Coin: 4 frames × 16×16 = 64×16 px
   private generateCoinTexture(): void {
-    const gfx = this.make.graphics({ add: false });
+    const gfx = this.make.graphics();
 
     const widths = [10, 6, 2, 6]; // simulación de giro
 
@@ -187,7 +160,7 @@ export class PreloadScene extends Phaser.Scene {
 
   // Agustín: 2 frames × 16×16 = 32×16 px
   private generateAgustinTexture(): void {
-    const gfx = this.make.graphics({ add: false });
+    const gfx = this.make.graphics();
 
     for (let i = 0; i < 2; i++) {
       const fx = i * 16;
@@ -239,9 +212,55 @@ export class PreloadScene extends Phaser.Scene {
     }
   }
 
+  // Coin block: 32×16 px — frame 0 activo (naranja), frame 1 usado (marrón oscuro)
+  private generateCoinBlockTexture(): void {
+    const gfx = this.make.graphics();
+
+    // Frame 0: bloque activo (naranja/amarillo)
+    gfx.fillStyle(0xd07000);
+    gfx.fillRect(0, 0, 16, 16);
+    gfx.fillStyle(0xf0a000); // cara clara
+    gfx.fillRect(1, 1, 14, 14);
+    gfx.fillStyle(0xffe060); // brillo superior
+    gfx.fillRect(1, 1, 14, 2);
+    gfx.fillRect(1, 1, 2, 14);
+    gfx.fillStyle(0xffffff); // símbolo "?" en el centro
+    gfx.fillRect(6, 3, 4, 2);  // parte superior
+    gfx.fillRect(8, 5, 2, 2);  // trazo derecho
+    gfx.fillRect(6, 7, 4, 2);  // curva inferior
+    gfx.fillRect(7, 11, 2, 2); // punto
+
+    // Frame 1: bloque usado (marrón apagado)
+    gfx.fillStyle(0x5c3a10);
+    gfx.fillRect(16, 0, 16, 16);
+    gfx.fillStyle(0x7a5020);
+    gfx.fillRect(17, 1, 14, 14);
+    gfx.fillStyle(0x3a2008); // borde oscuro interior
+    gfx.fillRect(17, 1, 14, 1);
+    gfx.fillRect(17, 14, 14, 1);
+    gfx.fillRect(17, 1, 1, 14);
+    gfx.fillRect(30, 1, 1, 14);
+
+    gfx.generateTexture(ASSETS.COIN_BLOCK, 32, 16);
+    gfx.destroy();
+
+    const tex = this.textures.get(ASSETS.COIN_BLOCK);
+    tex.add(0, 0,  0, 0, 16, 16);
+    tex.add(1, 0, 16, 0, 16, 16);
+  }
+
+  // Flag zone: 1×1 px blanco — usado como hitzone invisible del mástil
+  private generateFlagZoneTexture(): void {
+    const gfx = this.make.graphics();
+    gfx.fillStyle(0xffffff);
+    gfx.fillRect(0, 0, 1, 1);
+    gfx.generateTexture(ASSETS.FLAG_ZONE, 1, 1);
+    gfx.destroy();
+  }
+
   // Tileset: 16×16 px — un solo tile de suelo
   private generateTilesetTexture(): void {
-    const gfx = this.make.graphics({ add: false });
+    const gfx = this.make.graphics();
 
     // Base ladrillo
     gfx.fillStyle(0x8b6914);

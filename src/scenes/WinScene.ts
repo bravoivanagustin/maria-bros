@@ -1,4 +1,4 @@
-import { GAME, SCENES } from '../utils/constants';
+import { GAME, SCENES, FONTS } from '../utils/constants';
 import type { SceneTransitionData } from '../types';
 
 export class WinScene extends Phaser.Scene {
@@ -17,8 +17,8 @@ export class WinScene extends Phaser.Scene {
 
     // Mensaje principal
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 50, '¡Lo lograste!', {
-        fontFamily: '"Courier New", Courier, monospace',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 50, 'LO LOGRASTE!', {
+        fontFamily: FONTS.PIXEL,
         fontSize: '16px',
         color: '#ff69b4',
         stroke: '#000000',
@@ -27,9 +27,9 @@ export class WinScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 30, '¡Rescataste a Agustín!', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '10px',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 30, 'Rescataste a Agustin!', {
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ffdd00',
         stroke: '#000000',
         strokeThickness: 2,
@@ -37,9 +37,9 @@ export class WinScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 10, '💕 Te amo, María 💕', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '9px',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 10, 'Te amo, Maria', {
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ffffff',
         stroke: '#000000',
         strokeThickness: 2,
@@ -48,7 +48,7 @@ export class WinScene extends Phaser.Scene {
 
     this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 10, `SCORE FINAL: ${String(score).padStart(6, '0')}`, {
-        fontFamily: '"Courier New", Courier, monospace',
+        fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#aaffaa',
         stroke: '#000000',
@@ -59,7 +59,7 @@ export class WinScene extends Phaser.Scene {
     // Botón volver al menú
     const menuBtn = this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 40, '[ Volver al menú ]', {
-        fontFamily: '"Courier New", Courier, monospace',
+        fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#ffffff',
         stroke: '#000000',

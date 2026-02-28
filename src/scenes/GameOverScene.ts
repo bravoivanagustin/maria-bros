@@ -1,4 +1,4 @@
-import { GAME, SCENES } from '../utils/constants';
+import { GAME, SCENES, FONTS } from '../utils/constants';
 
 export class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -10,8 +10,8 @@ export class GameOverScene extends Phaser.Scene {
 
     this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 30, 'GAME OVER', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '20px',
+        fontFamily: FONTS.PIXEL,
+        fontSize: '16px',
         color: '#ff4444',
         stroke: '#000000',
         strokeThickness: 4,
@@ -19,9 +19,9 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2, '¡No te rindas, lo vas a lograr!', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '7px',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2, 'No te rindas!', {
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ffaaaa',
         stroke: '#000000',
         strokeThickness: 1,
@@ -30,7 +30,7 @@ export class GameOverScene extends Phaser.Scene {
 
     const retryBtn = this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 30, '[ Intentar de nuevo ]', {
-        fontFamily: '"Courier New", Courier, monospace',
+        fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#ffffff',
         stroke: '#000000',
@@ -44,9 +44,9 @@ export class GameOverScene extends Phaser.Scene {
     retryBtn.on('pointerdown', () => this.retry());
 
     const menuBtn = this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 44, '[ Menú principal ]', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '7px',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 44, '[ Menu principal ]', {
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#aaaaaa',
         stroke: '#000000',
         strokeThickness: 1,

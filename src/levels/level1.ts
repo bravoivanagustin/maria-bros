@@ -13,16 +13,25 @@ export const level1: LevelConfig = {
     { type: 'goomba', x: 530, y: 176 },
   ],
   collectibles: [
-    { type: 'coin', x: 80,  y: 155 },
+    { type: 'coin', x: 80, y: 155 },
     { type: 'coin', x: 128, y: 107 },
-    { type: 'coin', x: 192, y: 75  },
+    { type: 'coin', x: 192, y: 75 },
     { type: 'coin', x: 288, y: 155 },
     { type: 'coin', x: 448, y: 123 },
     { type: 'coin', x: 528, y: 155 },
   ],
+  // Bloques de moneda — ajustar posiciones según el diseño final del tilemap
+  coinBlocks: [
+    { x: 160, y: 160 },
+    { x: 336, y: 160 },
+    { x: 368, y: 160 },
+    { x: 464, y: 144 },
+  ],
   // Spawn: col 2, standing on ground row 12 (top = 192px), María center = 184px
   playerSpawn: { x: 32, y: 184 },
-  // Agustín al final del nivel, cerca del borde derecho
+  // Agustín al final del nivel (personaje visual, ya no dispara la victoria)
   winTrigger: { x: 590, y: 160, width: 32, height: 64 },
+  // Mástil de la bandera: x=540, base en y=192 (tile de suelo fila 12)
+  flagPole: { x: 540, groundY: 192 },
   timeLimit: 200,
 };

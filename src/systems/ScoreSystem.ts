@@ -4,15 +4,22 @@ export class ScoreSystem {
   private score: number = 0;
   private lives: number = GAME.MAX_LIVES;
   private timeRemaining: number;
+  private timeExpired: boolean = false;
 
   constructor(private scene: Phaser.Scene, timeLimit: number) {
     this.timeRemaining = timeLimit;
     this.scene.events.on(EVENTS.COIN_COLLECTED, this.onCoinCollected, this);
     this.scene.events.on(EVENTS.PLAYER_DIED, this.onPlayerDied, this);
+    this.scene.events.on(EVENTS.FLAG_BONUS, this.onFlagBonus, this);
   }
 
   private onCoinCollected(): void {
     this.score += 100;
+    this.scene.events.emit(EVENTS.SCORE_CHANGED, this.score);
+  }
+
+  private onFlagBonus(amount: number): void {
+    this.score += amount;
     this.scene.events.emit(EVENTS.SCORE_CHANGED, this.score);
   }
 
@@ -30,9 +37,9 @@ export class ScoreSystem {
   public update(delta: number): void {
     this.timeRemaining -= delta / 1000;
 
-    if (this.timeRemaining <= 0) {
+    if (this.timeRemaining <= 0 && !this.timeExpired) {
       this.timeRemaining = 0;
-      // Time-out counts as dying
+      this.timeExpired = true;
       this.scene.events.emit(EVENTS.PLAYER_DIED);
     }
 
@@ -54,5 +61,6 @@ export class ScoreSystem {
   public destroy(): void {
     this.scene.events.off(EVENTS.COIN_COLLECTED, this.onCoinCollected, this);
     this.scene.events.off(EVENTS.PLAYER_DIED, this.onPlayerDied, this);
+    this.scene.events.off(EVENTS.FLAG_BONUS, this.onFlagBonus, this);
   }
 }

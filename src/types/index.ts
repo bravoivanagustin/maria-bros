@@ -22,6 +22,16 @@ export interface PlayerSpawn {
   y: number;
 }
 
+export interface FlagPoleConfig {
+  x: number;
+  groundY: number;
+}
+
+export interface CoinBlockSpawnConfig {
+  x: number;
+  y: number;
+}
+
 export interface LevelConfig {
   id: string;
   name: string;
@@ -31,8 +41,10 @@ export interface LevelConfig {
   music: string;
   enemies: EnemySpawnConfig[];
   collectibles: CollectibleSpawnConfig[];
+  coinBlocks: CoinBlockSpawnConfig[];
   playerSpawn: PlayerSpawn;
   winTrigger: WinTrigger;
+  flagPole: FlagPoleConfig;
   timeLimit: number;
 }
 

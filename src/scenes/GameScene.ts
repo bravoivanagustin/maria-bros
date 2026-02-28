@@ -7,7 +7,8 @@ import { ScoreSystem } from '../systems/ScoreSystem';
 import { Maria } from '../entities/Maria';
 import { Goomba } from '../entities/enemies/Goomba';
 import { Coin } from '../entities/collectibles/Coin';
-import { Agustin } from '../entities/Agustin';
+import { CoinBlock } from '../entities/CoinBlock';
+import { FlagPole } from '../entities/FlagPole';
 import { HUD } from '../ui/HUD';
 import { LevelRegistry } from '../config/LevelRegistry';
 import type { LevelConfig, SceneTransitionData } from '../types';
@@ -24,7 +25,8 @@ export class GameScene extends Phaser.Scene {
   private maria!: Maria;
   private goombas!: Phaser.Physics.Arcade.Group;
   private coins!: Phaser.Physics.Arcade.StaticGroup;
-  private agustin!: Agustin;
+  private coinBlocks!: Phaser.GameObjects.Group;
+  private flagPole!: FlagPole;
 
   // Nivel
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -58,8 +60,9 @@ export class GameScene extends Phaser.Scene {
       this.maria,
       this.goombas,
       this.coins,
+      this.coinBlocks,
       this.groundLayer,
-      this.agustin,
+      this.flagPole,
     );
 
     this.cameraSystem.setup(
@@ -91,7 +94,6 @@ export class GameScene extends Phaser.Scene {
     this.groundLayer = this.levelMap.createLayer('ground', tileset, 0, 0)!;
     this.levelMap.createLayer('foreground', tileset, 0, 0)?.setDepth(10);
 
-    // Todos los tiles no vacíos del layer ground tienen colisión
     this.groundLayer.setCollisionByExclusion([-1]);
 
     this.physics.world.setBounds(
@@ -100,6 +102,10 @@ export class GameScene extends Phaser.Scene {
       this.levelMap.widthInPixels,
       this.levelMap.heightInPixels,
     );
+
+    // Sin límite inferior: permite que María caiga por los fosos
+    (this.physics as unknown as Phaser.Physics.Arcade.ArcadePhysics)
+      .world.setBoundsCollision(true, true, true, false);
   }
 
   private createSystems(): void {
@@ -125,7 +131,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // Monedas
+    // Monedas flotantes
     this.coins = this.physics.add.staticGroup();
     for (const collectibleDef of cfg.collectibles) {
       if (collectibleDef.type === 'coin') {
@@ -134,13 +140,16 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // Agustín: centro del winTrigger
-    const wt = cfg.winTrigger;
-    this.agustin = new Agustin(
-      this,
-      wt.x + wt.width / 2,
-      wt.y + wt.height / 2,
-    );
+    // Bloques de moneda — grupo regular para no resetear el cuerpo físico del bloque
+    this.coinBlocks = this.add.group();
+    for (const blockDef of cfg.coinBlocks) {
+      const block = new CoinBlock(this, blockDef.x, blockDef.y);
+      this.coinBlocks.add(block);
+    }
+
+    // Mástil de la bandera (condición de victoria)
+    const fp = cfg.flagPole;
+    this.flagPole = new FlagPole(this, fp.x, fp.groundY);
   }
 
   private setupEventListeners(): void {
@@ -153,7 +162,8 @@ export class GameScene extends Phaser.Scene {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
-    this.cameras.main.shake(300, 0.01);
+    // Dejar de seguir a María para que se vea cómo cae fuera del mapa
+    this.cameras.main.stopFollow();
     this.time.delayedCall(2000, () => {
       this.audioSystem.stopMusic();
       this.scene.restart({ levelId: this.levelConfig.id });
@@ -202,6 +212,11 @@ export class GameScene extends Phaser.Scene {
 
     this.scoreSystem.update(delta);
     this.hud.update();
+
+    // Muerte por foso: María cae por debajo del mapa
+    if (this.maria.y > this.levelMap.heightInPixels + 32) {
+      this.maria.fallIntoPit();
+    }
   }
 
   shutdown(): void {

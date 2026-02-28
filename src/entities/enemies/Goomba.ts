@@ -42,15 +42,12 @@ export class Goomba extends BaseEnemy {
     this.isAlive = false;
 
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocityX(0);
-    body.enable = false;
+    // Deslizarse con el frame de muerto — el body sigue activo para que caiga con gravedad
+    body.setVelocityX(this.direction * PHYSICS.ENEMY_SPEED * 0.5);
 
     this.play(ANIMS.GOOMBA_DEAD, true);
     this.scene.events.emit(EVENTS.ENEMY_DIED);
-
-    this.scene.time.delayedCall(500, () => {
-      if (this.scene) this.destroy();
-    });
+    // Sin destroy: se queda deslizando indefinidamente, sin interactuar con María
   }
 
   public destroy(fromScene?: boolean): void {

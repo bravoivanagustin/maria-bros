@@ -9,29 +9,29 @@ export class AnimationHelper {
   }
 
   private static createMariaAnims(anims: Phaser.Animations.AnimationManager): void {
-    // Spritesheet: idle(0-1) walk(2-5) jump(6) death(7-9)
+    // Spritesheet: idle(0) walk(1-3) jump(4) death(5)  — 6 frames × 16×16 = 96×16 px
     anims.create({
       key: ANIMS.MARIA_IDLE,
-      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 0, end: 1 }),
+      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 0, end: 0 }),
       frameRate: 4,
       repeat: -1,
     });
     anims.create({
       key: ANIMS.MARIA_WALK,
-      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 2, end: 5 }),
+      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 1, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
     anims.create({
       key: ANIMS.MARIA_JUMP,
-      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 6, end: 6 }),
+      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 4, end: 4 }),
       frameRate: 1,
       repeat: 0,
     });
     anims.create({
       key: ANIMS.MARIA_DEATH,
-      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 7, end: 9 }),
-      frameRate: 6,
+      frames: anims.generateFrameNumbers(ASSETS.PLAYER, { start: 5, end: 5 }),
+      frameRate: 1,
       repeat: 0,
     });
   }

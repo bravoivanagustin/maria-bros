@@ -1,4 +1,4 @@
-import { GAME, SCENES } from '../utils/constants';
+import { GAME, SCENES, FONTS } from '../utils/constants';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -10,9 +10,9 @@ export class MenuScene extends Phaser.Scene {
 
     // Título
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 40, 'MARÍA BROS', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '20px',
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 40, 'MARIA BROS', {
+        fontFamily: FONTS.PIXEL,
+        fontSize: '16px',
         color: '#ffffff',
         stroke: '#000000',
         strokeThickness: 4,
@@ -22,8 +22,8 @@ export class MenuScene extends Phaser.Scene {
     // Subtítulo romántico
     this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 20, 'Rescata a Agustin', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '10px',
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ffdd00',
         stroke: '#000000',
         strokeThickness: 2,
@@ -33,8 +33,8 @@ export class MenuScene extends Phaser.Scene {
     // Instrucciones
     this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 10, 'ESPACIO para jugar', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '10px',
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ffffff',
         stroke: '#000000',
         strokeThickness: 2,
@@ -43,7 +43,7 @@ export class MenuScene extends Phaser.Scene {
 
     this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 24, 'Flechas: mover   Arriba: saltar', {
-        fontFamily: '"Courier New", Courier, monospace',
+        fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#cccccc',
         stroke: '#000000',
@@ -54,8 +54,8 @@ export class MenuScene extends Phaser.Scene {
     // Parpadeo del texto "ESPACIO"
     const blinkText = this.add
       .text(GAME.WIDTH / 2, GAME.HEIGHT - 20, 'Presiona ESPACIO', {
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: '9px',
+        fontFamily: FONTS.PIXEL,
+        fontSize: '8px',
         color: '#ff69b4',
         stroke: '#000000',
         strokeThickness: 2,

@@ -1,8 +1,8 @@
-import { GAME } from '../utils/constants';
+import { GAME, FONTS } from '../utils/constants';
 import type { ScoreSystem } from '../systems/ScoreSystem';
 
 const HUD_STYLE: Phaser.Types.GameObjects.Text.TextStyle = {
-  fontFamily: '"Courier New", Courier, monospace',
+  fontFamily: FONTS.PIXEL,
   fontSize: '8px',
   color: '#ffffff',
   stroke: '#000000',
@@ -32,8 +32,7 @@ export class HUD {
       .setDepth(100);
 
     this.livesText = scene.add
-      .text(GAME.WIDTH / 2, 12, '❤❤❤', HUD_STYLE)
-      .setOrigin(0.5, 0)
+      .text(4, 12, `x${GAME.MAX_LIVES}`, HUD_STYLE)
       .setScrollFactor(0)
       .setDepth(100);
 
@@ -53,8 +52,7 @@ export class HUD {
     this.scoreText.setText(`SCORE ${String(score).padStart(6, '0')}`);
     this.timeText.setText(`TIME ${time}`);
 
-    const hearts = '❤'.repeat(Math.max(0, lives)) + '♡'.repeat(Math.max(0, GAME.MAX_LIVES - lives));
-    this.livesText.setText(hearts);
+    this.livesText.setText(`x${Math.max(0, lives)}`);
   }
 
   public destroy(): void {

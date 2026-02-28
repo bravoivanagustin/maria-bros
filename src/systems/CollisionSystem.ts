@@ -2,7 +2,8 @@ import { EVENTS } from '../utils/constants';
 import type { Maria } from '../entities/Maria';
 import type { Goomba } from '../entities/enemies/Goomba';
 import type { Coin } from '../entities/collectibles/Coin';
-import type { Agustin } from '../entities/Agustin';
+import type { CoinBlock } from '../entities/CoinBlock';
+import type { FlagPole } from '../entities/FlagPole';
 
 export class CollisionSystem {
   private hasWon: boolean = false;
@@ -13,16 +14,16 @@ export class CollisionSystem {
     maria: Maria,
     enemies: Phaser.Physics.Arcade.Group,
     coins: Phaser.Physics.Arcade.StaticGroup,
+    coinBlocks: Phaser.GameObjects.Group,
     groundLayer: Phaser.Tilemaps.TilemapLayer,
-    agustin: Agustin,
+    flagPole: FlagPole,
   ): void {
-    // scene.physics es ArcadePhysics en nuestro config
     const physics = this.scene.physics as unknown as Phaser.Physics.Arcade.ArcadePhysics;
 
     // María vs suelo
     physics.add.collider(maria, groundLayer);
 
-    // Enemigos vs suelo (para que no caigan)
+    // Enemigos vs suelo
     physics.add.collider(enemies, groundLayer);
 
     // María vs enemigos
@@ -38,7 +39,6 @@ export class CollisionSystem {
         const playerBody = player.body as Phaser.Physics.Arcade.Body;
         const enemyBody = enemy.body as Phaser.Physics.Arcade.Body;
 
-        // Stomp: María cae y su bottom está cerca del top del enemigo
         const isStomp =
           playerBody.velocity.y > 50 &&
           playerBody.bottom <= enemyBody.center.y + 6;
@@ -54,31 +54,59 @@ export class CollisionSystem {
       this,
     );
 
-    // María vs monedas
+    // María vs monedas flotantes
     physics.add.overlap(
       maria,
       coins,
       (_playerObj, coinObj) => {
-        const coin = coinObj as Coin;
-        coin.collect();
+        (coinObj as Coin).collect();
       },
       undefined,
       this,
     );
 
-    // María vs Agustín (condición de victoria)
-    physics.add.overlap(
+    // María vs bloques de moneda — colisión sólida + detección desde abajo
+    physics.add.collider(
       maria,
-      agustin,
-      () => {
-        if (!this.hasWon) {
-          this.hasWon = true;
-          this.scene.events.emit(EVENTS.LEVEL_WIN);
+      coinBlocks,
+      (playerObj, blockObj) => {
+        const block = blockObj as CoinBlock;
+        if (!block.isActive) return;
+
+        const mariaBod = (playerObj as Maria).body as Phaser.Physics.Arcade.Body;
+        const blockBod = block.body as Phaser.Physics.Arcade.Body;
+
+        // Golpe desde abajo: María va hacia arriba y su centro está debajo del bloque
+        const isBottomHit =
+          mariaBod.velocity.y < 0 &&
+          mariaBod.y + mariaBod.height / 2 > blockBod.y + blockBod.height / 2;
+
+        if (isBottomHit) {
+          block.hit();
         }
       },
       undefined,
       this,
     );
+
+    // María vs mástil de la bandera (condición de victoria)
+    physics.add.overlap(
+      maria,
+      flagPole.getHitZone(),
+      (playerObj) => {
+        if (!this.hasWon) {
+          this.hasWon = true;
+          const player = playerObj as Maria;
+          player.startWinSequence();
+          flagPole.touch(player.y);
+        }
+      },
+      undefined,
+      this,
+    );
+
+    // Suprimir warning — EVENTS importado para otros archivos que extienden este sistema
+    void EVENTS;
   }
 
   public reset(): void {

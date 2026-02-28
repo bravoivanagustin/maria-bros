@@ -12,6 +12,8 @@ export const ASSETS = {
   SFX_STOMP: 'sfx-stomp',
   SFX_HURT: 'sfx-hurt',
   SFX_WIN: 'sfx-win',
+  FLAG_ZONE: 'flag-zone',
+  COIN_BLOCK: 'coin-block',
 } as const;
 
 export const EVENTS = {
@@ -25,6 +27,7 @@ export const EVENTS = {
   SCORE_CHANGED: 'score-changed',
   LIVES_CHANGED: 'lives-changed',
   TIME_CHANGED: 'time-changed',
+  FLAG_BONUS: 'flag-bonus',
 } as const;
 
 export const ANIMS = {
@@ -49,7 +52,7 @@ export const SCENES = {
 } as const;
 
 export const PHYSICS = {
-  GRAVITY: 800,
+  GRAVITY: 1400,
   PLAYER_SPEED: 160,
   JUMP_VELOCITY: -500,
   ENEMY_SPEED: 60,
@@ -60,4 +63,21 @@ export const GAME = {
   HEIGHT: 216,
   TILE_SIZE: 16,
   MAX_LIVES: 3,
+} as const;
+
+export const FONTS = {
+  PIXEL: '"Press Start 2P", monospace',
+} as const;
+
+export const FLAG = {
+  POLE_WIDTH: 4,
+  POLE_HEIGHT: 100,
+  FLAG_WIDTH: 12,
+  FLAG_HEIGHT: 10,
+  // Puntos según altura — cuanto más arriba, más puntos (como Mario original)
+  BONUS_TOP: 5000,
+  BONUS_HIGH: 2000,
+  BONUS_MID: 800,
+  BONUS_LOW: 400,
+  BONUS_BOTTOM: 100,
 } as const;
