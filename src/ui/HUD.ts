@@ -16,7 +16,7 @@ export class HUD {
   private nameText: Phaser.GameObjects.Text;
 
   constructor(
-    private scene: Phaser.Scene,
+    scene: Phaser.Scene,
     private scoreSystem: ScoreSystem,
   ) {
     // Todos los textos son fijos a la cámara (setScrollFactor(0))

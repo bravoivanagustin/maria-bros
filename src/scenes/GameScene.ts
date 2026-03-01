@@ -83,18 +83,23 @@ export class GameScene extends Phaser.Scene {
   private createTilemap(): void {
     this.levelMap = this.make.tilemap({ key: this.levelConfig.tilemapKey });
 
-    const tileset = this.levelMap.addTilesetImage(
-      'tileset-world1',
-      this.levelConfig.tilesetKey,
-    );
+    const tilesets = this.levelConfig.tilesets.map(ts => {
+      const t = this.levelMap.addTilesetImage(
+        ts.name,
+        ts.key,
+        16, 16,
+        0,
+        ts.spacing ?? 0,
+      );
+      if (!t) throw new Error(`No se pudo cargar el tileset "${ts.name}". Verificar key y nombre.`);
+      return t;
+    });
 
-    if (!tileset) {
-      throw new Error('No se pudo cargar el tileset. Verificar que el nombre coincide.');
-    }
+    // Capa de fondo del tilemap (decoración sin colisión, detrás de todo)
+    this.levelMap.createLayer('background', tilesets, 0, 0)?.setDepth(-2);
 
-    this.levelMap.createLayer('background', tileset, 0, 0);
-    this.groundLayer = this.levelMap.createLayer('ground', tileset, 0, 0)!;
-    this.levelMap.createLayer('foreground', tileset, 0, 0)?.setDepth(10);
+    this.groundLayer = this.levelMap.createLayer('ground', tilesets, 0, 0)!;
+    this.levelMap.createLayer('foreground', tilesets, 0, 0)?.setDepth(10);
 
     this.groundLayer.setCollisionByExclusion([-1]);
 

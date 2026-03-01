@@ -5,7 +5,15 @@ export const level1: LevelConfig = {
   id: 'level1',
   name: 'Mundo 1-1',
   tilemapKey: ASSETS.LEVEL1_MAP,
-  tilesetKey: ASSETS.TILESET_WORLD1,
+  tilesets: [
+    { name: 'bloques',   key: ASSETS.TS_BLOQUES   },
+    { name: 'nubes',     key: ASSETS.TS_NUBES     },
+    { name: 'tileset',   key: ASSETS.TS_TILESET,  spacing: 1 },
+    { name: 'poste',     key: ASSETS.TS_POSTE     },
+    { name: 'tubo_lat',  key: ASSETS.TS_TUBO_LAT  },
+    { name: 'montañas',  key: ASSETS.TS_MONTANAS  },
+    { name: 'montañas2', key: ASSETS.TS_MONTANAS  },
+  ],
   backgroundKey: '',
   music: ASSETS.BGM_LEVEL1,
   enemies: [
@@ -31,7 +39,7 @@ export const level1: LevelConfig = {
   playerSpawn: { x: 32, y: 184 },
   // Agustín al final del nivel (personaje visual, ya no dispara la victoria)
   winTrigger: { x: 590, y: 160, width: 32, height: 64 },
-  // Mástil de la bandera: x=540, base en y=192 (tile de suelo fila 12)
-  flagPole: { x: 540, groundY: 192 },
+  // Mástil: col 53 tilemap (x=848, centro=856), filas 4-9 (top y=64, base y=164)
+  flagPole: { x: 856, groundY: 164 },
   timeLimit: 200,
 };

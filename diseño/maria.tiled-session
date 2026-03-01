@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level1.tmx",
+    "activeFile": "bloques.tsx",
     "expandedProjectPaths": [
         "."
     ],
@@ -14,14 +14,14 @@
         },
         "level1.tmx": {
             "scale": 1,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 536,
-                "y": 232.5
+                "x": 483,
+                "y": 210.5
             }
         },
         "montañas.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.25,
             "scaleInEditor": 1
         },
         "nubes.tsx": {
@@ -35,28 +35,39 @@
         "tileset.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 4
+        },
+        "tubo.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tubo_lat.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels",
     "last.externalTilesetPath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
-    "last.imagePath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
+    "last.imagePath": "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/tilesets",
     "map.height": 14,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": "2",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "map.width": 60,
     "openFiles": [
-        "level1.tmx",
         "bloques.tsx",
         "tileset.tsx",
         "nubes.tsx",
-        "nubes.tsx",
-        "nubes.tsx",
         "montañas.tsx",
-        "poste.tsx"
+        "poste.tsx",
+        "tubo.tsx",
+        "tubo_lat.tsx"
     ],
     "project": "maria.tiled-project",
     "recentFiles": [
+        "tubo_lat.tsx",
+        "tubo.tsx",
         "poste.tsx",
         "montañas.tsx",
         "nubes.tsx",
@@ -72,6 +83,6 @@
         "height": 16,
         "width": 16
     },
-    "tileset.transparentColor": "#0c45b0",
+    "tileset.transparentColor": "#9393fe",
     "tileset.useTransparentColor": false
 }

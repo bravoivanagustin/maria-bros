@@ -32,11 +32,18 @@ export interface CoinBlockSpawnConfig {
   y: number;
 }
 
+// Un tileset de Tiled asociado a su key de Phaser
+export interface TilesetDef {
+  name: string;    // nombre en Tiled (debe coincidir con el JSON del mapa)
+  key: string;     // key cargado en PreloadScene
+  spacing?: number;
+}
+
 export interface LevelConfig {
   id: string;
   name: string;
   tilemapKey: string;
-  tilesetKey: string;
+  tilesets: TilesetDef[];
   backgroundKey: string;
   music: string;
   enemies: EnemySpawnConfig[];

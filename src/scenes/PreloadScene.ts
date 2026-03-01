@@ -9,6 +9,14 @@ export class PreloadScene extends Phaser.Scene {
   preload(): void {
     this.load.tilemapTiledJSON(ASSETS.LEVEL1_MAP, 'assets/tilemaps/levels/level1.json');
 
+    // Tilesets del nivel 1
+    this.load.image(ASSETS.TS_BLOQUES,   'assets/tilemaps/tilesets/bloques16x16.png');
+    this.load.image(ASSETS.TS_NUBES,     'assets/tilemaps/tilesets/nubes.png');
+    this.load.image(ASSETS.TS_TILESET,   'assets/tilemaps/tilesets/tileset.png');
+    this.load.image(ASSETS.TS_POSTE,     'assets/tilemaps/tilesets/poste.png');
+    this.load.image(ASSETS.TS_TUBO_LAT,  'assets/tilemaps/tilesets/tubo_lat.png');
+    this.load.image(ASSETS.TS_MONTANAS,  'assets/tilemaps/tilesets/montañas.png');
+
     // Frames reales de María — se componen en buildMariaTexture()
     this.load.image('maria-quieta',      'assets/sprites/player/maria-quieta.png');
     this.load.image('maria-corriendo-1', 'assets/sprites/player/maria-corriendo-1.png');
@@ -16,6 +24,10 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image('maria-corriendo-3', 'assets/sprites/player/maria-corriendo-3.png');
     this.load.image('maria-saltando',    'assets/sprites/player/maria-saltando.png');
     this.load.image('maria-perdio',      'assets/sprites/player/maria-perdio.png');
+
+    // Frames del coin block — activo y usado (16×16 cada uno)
+    this.load.image('coinblock-activo', 'assets/sprites/ui/coinblock-activo.png');
+    this.load.image('coinblock-usado',  'assets/sprites/ui/coinblock-usado.png');
 
     // Frames reales del gato enemigo — se componen en buildGoombaTexture()
     this.load.image('gato-malo-1',  'assets/sprites/enemies/gato-malo-1.png');
@@ -102,59 +114,6 @@ export class PreloadScene extends Phaser.Scene {
       tex.add(i, 0, i * F, 0, F, F);
     }
     tex.refresh();
-  }
-
-  // Goomba placeholder — ya no se usa, se reemplazó por buildGoombaTexture()
-  // Mantenido como referencia visual del layout de frames.
-  private generateGoombaTexture(): void {
-    const gfx = this.make.graphics();
-
-    for (let i = 0; i < 4; i++) {
-      const fx = i * 16;
-
-      if (i < 2) {
-        // Cuerpo marrón
-        gfx.fillStyle(0x7a3b00);
-        gfx.fillRect(fx + 2, 3, 12, 10);
-
-        // Ojos blancos con pupila
-        gfx.fillStyle(0xffffff);
-        gfx.fillRect(fx + 3, 4, 4, 4);
-        gfx.fillRect(fx + 9, 4, 4, 4);
-        gfx.fillStyle(0x000000);
-        // Cejas amenazantes
-        if (i === 0) {
-          gfx.fillRect(fx + 4, 5, 2, 2);
-          gfx.fillRect(fx + 10, 5, 2, 2);
-        } else {
-          gfx.fillRect(fx + 5, 5, 2, 2);
-          gfx.fillRect(fx + 9, 5, 2, 2);
-        }
-
-        // Pies
-        const footOff = (i === 0) ? 1 : -1;
-        gfx.fillStyle(0x4a2000);
-        gfx.fillRect(fx + 2, 13 + footOff, 4, 3);
-        gfx.fillRect(fx + 10, 13 - footOff, 4, 3);
-      } else {
-        // Dead: aplastado
-        gfx.fillStyle(0x7a3b00);
-        gfx.fillRect(fx + 1, 11, 14, 5);
-        gfx.fillStyle(0xffffff);
-        gfx.fillRect(fx + 2, 12, 3, 2);
-        gfx.fillRect(fx + 11, 12, 3, 2);
-        gfx.fillStyle(0x000000);
-        gfx.fillRect(fx + 3, 12, 2, 1);
-        gfx.fillRect(fx + 11, 12, 2, 1);
-      }
-    }
-
-    gfx.generateTexture(ASSETS.ENEMY_GOOMBA, 64, 16);
-    gfx.destroy();
-    const goombaTex = this.textures.get(ASSETS.ENEMY_GOOMBA);
-    for (let i = 0; i < 4; i++) {
-      goombaTex.add(i, 0, i * 16, 0, 16, 16);
-    }
   }
 
   // Coin: 4 frames × 16×16 = 64×16 px
@@ -247,30 +206,50 @@ export class PreloadScene extends Phaser.Scene {
     }
   }
 
-  // Coin block: 32×16 px — frame 0 activo (naranja), frame 1 usado (marrón oscuro)
+  // Coin block: 32×16 px — frame 0 activo, frame 1 usado
+  // Si existen los sprites reales los usa; sino genera un placeholder.
   private generateCoinBlockTexture(): void {
+    const F = 16;
+    const hasReal =
+      this.textures.exists('coinblock-activo') &&
+      this.textures.exists('coinblock-usado');
+
+    if (hasReal) {
+      const tex = this.textures.createCanvas(ASSETS.COIN_BLOCK, F * 2, F)!;
+      const ctx = tex.getContext() as CanvasRenderingContext2D;
+
+      for (const [i, key] of (['coinblock-activo', 'coinblock-usado'] as const).entries()) {
+        const src = this.textures.get(key).getSourceImage() as HTMLImageElement;
+        ctx.drawImage(src, 0, 0, src.width, src.height, i * F, 0, F, F);
+      }
+
+      tex.add(0, 0,  0, 0, F, F);
+      tex.add(1, 0, F, 0, F, F);
+      tex.refresh();
+      return;
+    }
+
+    // Placeholder: bloque naranja con "?" y estado usado marrón
     const gfx = this.make.graphics();
 
-    // Frame 0: bloque activo (naranja/amarillo)
     gfx.fillStyle(0xd07000);
     gfx.fillRect(0, 0, 16, 16);
-    gfx.fillStyle(0xf0a000); // cara clara
+    gfx.fillStyle(0xf0a000);
     gfx.fillRect(1, 1, 14, 14);
-    gfx.fillStyle(0xffe060); // brillo superior
+    gfx.fillStyle(0xffe060);
     gfx.fillRect(1, 1, 14, 2);
     gfx.fillRect(1, 1, 2, 14);
-    gfx.fillStyle(0xffffff); // símbolo "?" en el centro
-    gfx.fillRect(6, 3, 4, 2);  // parte superior
-    gfx.fillRect(8, 5, 2, 2);  // trazo derecho
-    gfx.fillRect(6, 7, 4, 2);  // curva inferior
-    gfx.fillRect(7, 11, 2, 2); // punto
+    gfx.fillStyle(0xffffff);
+    gfx.fillRect(6, 3, 4, 2);
+    gfx.fillRect(8, 5, 2, 2);
+    gfx.fillRect(6, 7, 4, 2);
+    gfx.fillRect(7, 11, 2, 2);
 
-    // Frame 1: bloque usado (marrón apagado)
     gfx.fillStyle(0x5c3a10);
     gfx.fillRect(16, 0, 16, 16);
     gfx.fillStyle(0x7a5020);
     gfx.fillRect(17, 1, 14, 14);
-    gfx.fillStyle(0x3a2008); // borde oscuro interior
+    gfx.fillStyle(0x3a2008);
     gfx.fillRect(17, 1, 14, 1);
     gfx.fillRect(17, 14, 14, 1);
     gfx.fillRect(17, 1, 1, 14);

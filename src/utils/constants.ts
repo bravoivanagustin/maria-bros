@@ -14,6 +14,14 @@ export const ASSETS = {
   SFX_WIN: 'sfx-win',
   FLAG_ZONE: 'flag-zone',
   COIN_BLOCK: 'coin-block',
+  BG_LEVEL1: 'bg-level1',
+  // Tilesets del nivel 1
+  TS_BLOQUES:   'ts-bloques',
+  TS_NUBES:     'ts-nubes',
+  TS_TILESET:   'ts-tileset',
+  TS_POSTE:     'ts-poste',
+  TS_TUBO_LAT:  'ts-tubo-lat',
+  TS_MONTANAS:  'ts-montanas',
 } as const;
 
 export const EVENTS = {

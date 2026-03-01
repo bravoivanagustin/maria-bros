@@ -2,7 +2,6 @@ import { ASSETS, EVENTS, FLAG, FONTS } from '../utils/constants';
 
 export class FlagPole {
   private readonly scene: Phaser.Scene;
-  private readonly poleGraphics: Phaser.GameObjects.Graphics;
   private readonly flagRect: Phaser.GameObjects.Rectangle;
   private readonly hitZone: Phaser.Physics.Arcade.Image;
   private touched: boolean = false;
@@ -17,11 +16,7 @@ export class FlagPole {
     this.poleBottomY = groundY;
     this.poleTopY = groundY - FLAG.POLE_HEIGHT;
 
-    // Mástil visual (gris con esfera dorada en la cima)
-    this.poleGraphics = scene.add.graphics();
-    this.drawPole();
-
-    // Bandera (arranca en la cima del mástil)
+    // Bandera (arranca en la cima del mástil, encima del tile del poste)
     this.flagRect = scene.add.rectangle(
       x + FLAG.POLE_WIDTH / 2 + FLAG.FLAG_WIDTH / 2 + 1,
       this.poleTopY + 4 + FLAG.FLAG_HEIGHT / 2,
@@ -42,20 +37,6 @@ export class FlagPole {
     body.allowGravity = false;
     body.setImmovable(true);
     body.setSize(FLAG.POLE_WIDTH + 8, FLAG.POLE_HEIGHT);
-  }
-
-  private drawPole(): void {
-    // Mástil gris
-    this.poleGraphics.fillStyle(0x999999);
-    this.poleGraphics.fillRect(
-      this.poleX - FLAG.POLE_WIDTH / 2,
-      this.poleTopY,
-      FLAG.POLE_WIDTH,
-      FLAG.POLE_HEIGHT,
-    );
-    // Esfera dorada en la cima
-    this.poleGraphics.fillStyle(0xffd700);
-    this.poleGraphics.fillCircle(this.poleX, this.poleTopY, 4);
   }
 
   public getHitZone(): Phaser.Physics.Arcade.Image {
