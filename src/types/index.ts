@@ -25,6 +25,7 @@ export interface FlagPoleConfig {
   groundY: number;       // bottom del hitzone — debe quedar 1px sobre el body de María en el suelo
   poleHeight?: number;   // altura del hitzone (default: FLAG.POLE_HEIGHT)
   flagBottomY?: number;  // hasta dónde anima la bandera; si no se especifica, usa groundY
+  winDelay?: number;     // ms de espera antes de emitir LEVEL_WIN (default: 500)
 }
 
 export interface CoinBlockSpawnConfig {

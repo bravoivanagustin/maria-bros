@@ -49,6 +49,6 @@ export const level1: LevelConfig = {
   // groundY=256 (y_top del base block row 16): hitzone bottom=256 < body_top María(257) → sin win accidental
   // poleHeight=144 (112→256): hitzone top coincide con primer tile del poste
   // flagBottomY=272: la bandera anima hasta el fondo visual del mástil (row 16 y_bottom)
-  flagPole: { x: 1176, groundY: 256, poleHeight: 144, flagBottomY: 272 },
+  flagPole: { x: 1175, groundY: 256, poleHeight: 128, flagBottomY: 256 },
   timeLimit: 200,
 };

@@ -54,6 +54,6 @@ export const level3: LevelConfig = {
   // Poste: col 145 centro (x=2328), background rows 4-14 (y_top=64..224)
   // Plataforma de llegada: row 15 y_top=240 → groundY=240
   // poleHeight = 240 - 64 = 176
-  flagPole: { x: 2328, groundY: 240, poleHeight: 176, flagBottomY: 240 },
+  flagPole: { x: 2327, groundY: 240, poleHeight: 160, flagBottomY: 224, winDelay: 2000 },
   timeLimit: 300,
 };

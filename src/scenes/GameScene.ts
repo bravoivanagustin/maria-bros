@@ -194,7 +194,7 @@ export class GameScene extends Phaser.Scene {
 
     // Mástil de la bandera (condición de victoria)
     const fp = cfg.flagPole;
-    this.flagPole = new FlagPole(this, fp.x, fp.groundY, fp.poleHeight, fp.flagBottomY);
+    this.flagPole = new FlagPole(this, fp.x, fp.groundY, fp.poleHeight, fp.flagBottomY, fp.winDelay);
   }
 
   private setupEventListeners(): void {
@@ -220,6 +220,7 @@ export class GameScene extends Phaser.Scene {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
+    this.cameras.main.stopFollow();
     this.cameras.main.shake(500, 0.02);
     this.time.delayedCall(2500, () => {
       this.audioSystem.stopMusic();

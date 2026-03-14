@@ -22,7 +22,7 @@ export class EndingScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.cameras.main.setBackgroundColor('#000000');
+    this.cameras.main.setBackgroundColor('#FFFFFF');
     this.cameras.main.fadeIn(800);
 
     const cx = GAME.WIDTH / 2;
@@ -31,19 +31,19 @@ export class EndingScene extends Phaser.Scene {
     // Monedas rebotando (detrás de los personajes)
     this.spawnCoins();
 
-    // Personajes centrados y pegados
+    // Personajes centrados sin overlap (16px × escala 3 = 48px, offset 28 = 4px gap)
     this.mariaImg = this.add
-      .image(cx - 20, cy, ASSETS.MARIA_QUIETA)
+      .image(cx - 24, cy, ASSETS.MARIA_QUIETA)
       .setScale(3)
       .setOrigin(0.5);
     this.agusImg = this.add
-      .image(cx + 20, cy, ASSETS.TS_AGUS)
+      .image(cx + 24, cy, ASSETS.TS_AGUS_2)
       .setScale(3)
       .setOrigin(0.5);
 
     // Texto superior
     this.add
-      .text(cx, 18, '¡Lo lograste!', {
+      .text(cx, 18, '¡Lo lograste, te amo!', {
         fontFamily: FONTS.PIXEL,
         fontSize: '10px',
         color: '#ff69b4',
@@ -104,7 +104,7 @@ export class EndingScene extends Phaser.Scene {
       this.alternateTimer = 0;
       this.showBeso = !this.showBeso;
       this.mariaImg.setTexture(this.showBeso ? ASSETS.MARIA_BESO : ASSETS.MARIA_QUIETA);
-      this.agusImg.setTexture(this.showBeso ? ASSETS.AGUS_BESO : ASSETS.TS_AGUS);
+      this.agusImg.setTexture(this.showBeso ? ASSETS.AGUS_BESO : ASSETS.TS_AGUS_2);
     }
 
     // Física simple de monedas

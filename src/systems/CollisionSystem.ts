@@ -25,8 +25,8 @@ export class CollisionSystem {
   ): void {
     const physics = this.scene.physics as unknown as Phaser.Physics.Arcade.ArcadePhysics;
 
-    // María vs suelo — durante WINNING ignora el bloque base del poste y cualquier
-    // tile decorativo del mástil en esa columna, para que caiga al suelo real.
+    // María vs suelo — durante WINNING ignora tiles decorativos del mástil (por encima del suelo),
+    // pero deja el tile del suelo sólido para que María pueda aterrizar normalmente.
     const poleColX = Math.floor(flagPole.poleX / GAME.TILE_SIZE) * GAME.TILE_SIZE;
     physics.add.collider(
       maria,
@@ -35,9 +35,7 @@ export class CollisionSystem {
       (playerObj, tileObj) => {
         if ((playerObj as Maria).getState() !== MariaState.WINNING) return true;
         const tile = tileObj as Phaser.Tilemaps.Tile;
-        // Ignorar toda la fila base del poste (permite caer al suelo real)
-        if (tile.pixelY === flagPole.poleBottomY) return false;
-        // Ignorar tiles en la columna del poste por encima de la base (ej. tile decorativo row-1)
+        // Ignorar solo tiles del mástil por encima del suelo (estructura decorativa en ground layer)
         if (tile.pixelX === poleColX && tile.pixelY < flagPole.poleBottomY) return false;
         return true;
       },

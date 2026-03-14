@@ -40,6 +40,6 @@ export const level2: LevelConfig = {
   // groundY=544 < body_top María parada en suelo (551-6=545) → sin win accidental
   // poleHeight = 544 - 384 = 160 (cubre exactamente rows 24-33 del background)
   // flagBottomY=560: borde inferior del base block (row 34 y_bottom)
-  flagPole: { x: 1848, groundY: 544, poleHeight: 160, flagBottomY: 560 },
+  flagPole: { x: 1847, groundY: 544, poleHeight: 144, flagBottomY: 544 },
   timeLimit: 300,
 };

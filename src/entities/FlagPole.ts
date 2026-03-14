@@ -6,6 +6,7 @@ export class FlagPole {
   private readonly hitZone: Phaser.Physics.Arcade.Image;
   private readonly poleHeight: number;
   private readonly flagBottomY: number;
+  private readonly winDelay: number;
   private touched: boolean = false;
 
   readonly poleX: number;
@@ -18,12 +19,14 @@ export class FlagPole {
     groundY: number,
     poleHeight: number = FLAG.POLE_HEIGHT,
     flagBottomY: number = groundY,
+    winDelay: number = 500,
   ) {
     this.scene = scene;
     this.poleX = x;
     this.poleBottomY = groundY;
     this.poleHeight = poleHeight;
     this.flagBottomY = flagBottomY;
+    this.winDelay = winDelay;
     this.poleTopY = groundY - poleHeight;
 
     // Bandera (arranca en la cima del mástil, la imagen PNG de 16×16 cuelga a la derecha del poste)
@@ -116,7 +119,7 @@ export class FlagPole {
       duration: 1200,
       ease: 'Cubic.in',
       onComplete: () => {
-        this.scene.time.delayedCall(500, () => {
+        this.scene.time.delayedCall(this.winDelay, () => {
           this.scene.events.emit(EVENTS.LEVEL_WIN);
         });
       },
