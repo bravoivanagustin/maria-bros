@@ -6,6 +6,7 @@ export class AnimationHelper {
     AnimationHelper.createGoombaAnims(anims);
     AnimationHelper.createCoinAnims(anims);
     AnimationHelper.createAgustinAnims(anims);
+    AnimationHelper.createCoinBlockAnims(anims);
   }
 
   private static createMariaAnims(anims: Phaser.Animations.AnimationManager): void {
@@ -58,6 +59,16 @@ export class AnimationHelper {
       key: ANIMS.COIN_SPIN,
       frames: anims.generateFrameNumbers(ASSETS.COIN, { start: 0, end: 3 }),
       frameRate: 8,
+      repeat: -1,
+    });
+  }
+
+  private static createCoinBlockAnims(anims: Phaser.Animations.AnimationManager): void {
+    // Frames 0-2 ciclan para simular giro; frame 3 = estado usado (no se usa en anim)
+    anims.create({
+      key: ANIMS.COIN_BLOCK_SPIN,
+      frames: anims.generateFrameNumbers(ASSETS.COIN_BLOCK, { start: 0, end: 2 }),
+      frameRate: 6,
       repeat: -1,
     });
   }

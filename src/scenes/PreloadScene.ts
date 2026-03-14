@@ -8,31 +8,58 @@ export class PreloadScene extends Phaser.Scene {
 
   preload(): void {
     this.load.tilemapTiledJSON(ASSETS.LEVEL1_MAP, 'assets/tilemaps/levels/level1.json');
+    this.load.tilemapTiledJSON(ASSETS.LEVEL2_MAP, 'assets/tilemaps/levels/level2.json');
+    this.load.tilemapTiledJSON(ASSETS.LEVEL3_MAP, 'assets/tilemaps/levels/level3.json');
 
-    // Tilesets del nivel 1
-    this.load.image(ASSETS.TS_BLOQUES,   'assets/tilemaps/tilesets/bloques16x16.png');
-    this.load.image(ASSETS.TS_NUBES,     'assets/tilemaps/tilesets/nubes.png');
-    this.load.image(ASSETS.TS_TILESET,   'assets/tilemaps/tilesets/tileset.png');
-    this.load.image(ASSETS.TS_POSTE,     'assets/tilemaps/tilesets/poste.png');
-    this.load.image(ASSETS.TS_TUBO_LAT,  'assets/tilemaps/tilesets/tubo_lat.png');
-    this.load.image(ASSETS.TS_MONTANAS,  'assets/tilemaps/tilesets/montañas.png');
+    // Tilesets
+    this.load.image(ASSETS.TS_BLOQUES, 'assets/tilemaps/tilesets/bloques.png');
+    this.load.image(ASSETS.TS_NUBES, 'assets/tilemaps/tilesets/nubes.png');
+    this.load.image(ASSETS.TS_POSTE, 'assets/tilemaps/tilesets/poste.png');
+    this.load.image(ASSETS.TS_TUBO, 'assets/tilemaps/tilesets/tubo.png');
+    this.load.image(ASSETS.TS_MONTANAS, 'assets/tilemaps/tilesets/montañas.png');
+    this.load.image(ASSETS.TS_VERDE, 'assets/tilemaps/tilesets/verde.png');
+    this.load.image(ASSETS.TS_PALOS, 'assets/tilemaps/tilesets/palos.png');
+    this.load.image(ASSETS.TS_ARBOLES, 'assets/tilemaps/tilesets/arboles.png');
+    this.load.image(ASSETS.TS_VERDE_2, 'assets/tilemaps/tilesets/verde_2.png');
+    this.load.image(ASSETS.TS_AGUS, 'assets/tilemaps/tilesets/agus-quieto.png');
+    this.load.image(ASSETS.TS_AGUS_2, 'assets/tilemaps/tilesets/agus-quieto-sin-fondo.png');
 
     // Frames reales de María — se componen en buildMariaTexture()
-    this.load.image('maria-quieta',      'assets/sprites/player/maria-quieta.png');
+    this.load.image('maria-quieta', 'assets/sprites/player/maria-quieta.png');
     this.load.image('maria-corriendo-1', 'assets/sprites/player/maria-corriendo-1.png');
     this.load.image('maria-corriendo-2', 'assets/sprites/player/maria-corriendo-2.png');
     this.load.image('maria-corriendo-3', 'assets/sprites/player/maria-corriendo-3.png');
-    this.load.image('maria-saltando',    'assets/sprites/player/maria-saltando.png');
-    this.load.image('maria-perdio',      'assets/sprites/player/maria-perdio.png');
+    this.load.image('maria-saltando', 'assets/sprites/player/maria-saltando.png');
+    this.load.image('maria-perdio', 'assets/sprites/player/maria-perdio.png');
 
-    // Frames del coin block — activo y usado (16×16 cada uno)
-    this.load.image('coinblock-activo', 'assets/sprites/ui/coinblock-activo.png');
-    this.load.image('coinblock-usado',  'assets/sprites/ui/coinblock-usado.png');
+    // Frames del coin block — 3 frames activos + 1 usado (16×16 cada uno)
+    this.load.image('coinblock-activo-1', 'assets/sprites/ui/coinblock-activo-1.png');
+    this.load.image('coinblock-activo-2', 'assets/sprites/ui/coinblock-activo-2.png');
+    this.load.image('coinblock-activo-3', 'assets/sprites/ui/coinblock-activo-3.png');
+    this.load.image('coinblock-usado', 'assets/sprites/ui/coinblock-usado.png');
+
+    // Bloque rompible (brick)
+    this.load.image(ASSETS.BRICK_BLOCK, 'assets/sprites/ui/bloque.png');
+
+    // Bandera del mástil
+    this.load.image(ASSETS.FLAG_IMAGE, 'assets/tilemaps/tilesets/bandera.png');
+
+    // Frames reales de la moneda — ciclo 1,2,3,2,1,2,3,2...
+    this.load.image('moneda-1', 'assets/tilemaps/tilesets/moneda1.png');
+    this.load.image('moneda-2', 'assets/tilemaps/tilesets/moneda2.png');
+    this.load.image('moneda-3', 'assets/tilemaps/tilesets/moneda3.png');
+
+    // Ending scene
+    this.load.image(ASSETS.MARIA_BESO, 'assets/sprites/player/maria-beso.png');
+    this.load.image(ASSETS.AGUS_BESO, 'assets/sprites/player/agus-beso.png');
+
+    // Pez enemigo
+    this.load.image(ASSETS.ENEMY_FISH, 'assets/sprites/enemies/pez.png');
 
     // Frames reales del gato enemigo — se componen en buildGoombaTexture()
-    this.load.image('gato-malo-1',  'assets/sprites/enemies/gato-malo-1.png');
-    this.load.image('gato-malo-2',  'assets/sprites/enemies/gato-malo-2.png');
-    this.load.image('gato-malo-3',  'assets/sprites/enemies/gato-malo-3.png');
+    this.load.image('gato-malo-1', 'assets/sprites/enemies/gato-malo-1.png');
+    this.load.image('gato-malo-2', 'assets/sprites/enemies/gato-malo-2.png');
+    this.load.image('gato-malo-3', 'assets/sprites/enemies/gato-malo-3.png');
     this.load.image('gato-bueno-1', 'assets/sprites/enemies/gato-bueno-1.png');
     this.load.image('gato-bueno-2', 'assets/sprites/enemies/gato-bueno-2.png');
     this.load.image('gato-bueno-3', 'assets/sprites/enemies/gato-bueno-3.png');
@@ -52,7 +79,7 @@ export class PreloadScene extends Phaser.Scene {
   private generatePlaceholderTextures(): void {
     this.buildMariaTexture();
     this.buildGoombaTexture();
-    this.generateCoinTexture();
+    this.buildCoinTexture();
     this.generateAgustinTexture();
     this.generateTilesetTexture();
     this.generateFlagZoneTexture();
@@ -116,10 +143,34 @@ export class PreloadScene extends Phaser.Scene {
     tex.refresh();
   }
 
-  // Coin: 4 frames × 16×16 = 64×16 px
-  private generateCoinTexture(): void {
-    const gfx = this.make.graphics();
+  // Moneda: 4 frames × 16×16 = 64×16 px — ciclo 1,2,3,2 (→ loop 1,2,3,2,1,2,3,2...)
+  private buildCoinTexture(): void {
+    const F = 16;
+    const hasReal =
+      this.textures.exists('moneda-1') &&
+      this.textures.exists('moneda-2') &&
+      this.textures.exists('moneda-3');
 
+    if (hasReal) {
+      // frame 0=moneda1, 1=moneda2, 2=moneda3, 3=moneda2 → produce el ciclo 1,2,3,2
+      const realFrames = ['moneda-1', 'moneda-2', 'moneda-3', 'moneda-2'];
+      const tex = this.textures.createCanvas(ASSETS.COIN, F * 4, F)!;
+      const ctx = tex.getContext() as CanvasRenderingContext2D;
+
+      for (let i = 0; i < realFrames.length; i++) {
+        const src = this.textures.get(realFrames[i]).getSourceImage() as HTMLImageElement;
+        ctx.drawImage(src, 0, 0, src.width, src.height, i * F, 0, F, F);
+      }
+
+      for (let i = 0; i < 4; i++) {
+        tex.add(i, 0, i * F, 0, F, F);
+      }
+      tex.refresh();
+      return;
+    }
+
+    // Placeholder: moneda dorada animada
+    const gfx = this.make.graphics();
     const widths = [10, 6, 2, 6]; // simulación de giro
 
     for (let i = 0; i < 4; i++) {
@@ -127,17 +178,14 @@ export class PreloadScene extends Phaser.Scene {
       const w = widths[i];
       const offX = (10 - w) / 2;
 
-      // Brillo exterior
       gfx.fillStyle(0xffa500);
       gfx.fillRect(fx + 3 + offX, 3, w, 10);
 
-      // Centro dorado
       gfx.fillStyle(0xffdd00);
       if (w > 2) {
         gfx.fillRect(fx + 4 + offX, 4, w - 2, 8);
       }
 
-      // Reflejo
       if (w >= 6) {
         gfx.fillStyle(0xffffff);
         gfx.fillRect(fx + 4 + offX, 4, 2, 3);
@@ -206,61 +254,69 @@ export class PreloadScene extends Phaser.Scene {
     }
   }
 
-  // Coin block: 32×16 px — frame 0 activo, frame 1 usado
+  // Coin block: 64×16 px — frames 0-2 activos (ciclo de giro), frame 3 usado
   // Si existen los sprites reales los usa; sino genera un placeholder.
   private generateCoinBlockTexture(): void {
     const F = 16;
     const hasReal =
-      this.textures.exists('coinblock-activo') &&
+      this.textures.exists('coinblock-activo-1') &&
+      this.textures.exists('coinblock-activo-2') &&
+      this.textures.exists('coinblock-activo-3') &&
       this.textures.exists('coinblock-usado');
 
     if (hasReal) {
-      const tex = this.textures.createCanvas(ASSETS.COIN_BLOCK, F * 2, F)!;
+      const activeFrames = ['coinblock-activo-1', 'coinblock-activo-2', 'coinblock-activo-3', 'coinblock-usado'];
+      const tex = this.textures.createCanvas(ASSETS.COIN_BLOCK, F * 4, F)!;
       const ctx = tex.getContext() as CanvasRenderingContext2D;
 
-      for (const [i, key] of (['coinblock-activo', 'coinblock-usado'] as const).entries()) {
-        const src = this.textures.get(key).getSourceImage() as HTMLImageElement;
+      for (let i = 0; i < activeFrames.length; i++) {
+        const src = this.textures.get(activeFrames[i]).getSourceImage() as HTMLImageElement;
         ctx.drawImage(src, 0, 0, src.width, src.height, i * F, 0, F, F);
       }
 
-      tex.add(0, 0,  0, 0, F, F);
-      tex.add(1, 0, F, 0, F, F);
+      for (let i = 0; i < 4; i++) {
+        tex.add(i, 0, i * F, 0, F, F);
+      }
       tex.refresh();
       return;
     }
 
-    // Placeholder: bloque naranja con "?" y estado usado marrón
+    // Placeholder: 3 frames activos (bloque naranja con "?") + 1 frame usado (marrón)
     const gfx = this.make.graphics();
 
-    gfx.fillStyle(0xd07000);
-    gfx.fillRect(0, 0, 16, 16);
-    gfx.fillStyle(0xf0a000);
-    gfx.fillRect(1, 1, 14, 14);
-    gfx.fillStyle(0xffe060);
-    gfx.fillRect(1, 1, 14, 2);
-    gfx.fillRect(1, 1, 2, 14);
-    gfx.fillStyle(0xffffff);
-    gfx.fillRect(6, 3, 4, 2);
-    gfx.fillRect(8, 5, 2, 2);
-    gfx.fillRect(6, 7, 4, 2);
-    gfx.fillRect(7, 11, 2, 2);
+    for (let i = 0; i < 3; i++) {
+      const ox = i * 16;
+      gfx.fillStyle(0xd07000);
+      gfx.fillRect(ox, 0, 16, 16);
+      gfx.fillStyle(0xf0a000);
+      gfx.fillRect(ox + 1, 1, 14, 14);
+      gfx.fillStyle(0xffe060);
+      gfx.fillRect(ox + 1, 1, 14, 2);
+      gfx.fillRect(ox + 1, 1, 2, 14);
+      gfx.fillStyle(0xffffff);
+      gfx.fillRect(ox + 6, 3, 4, 2);
+      gfx.fillRect(ox + 8, 5, 2, 2);
+      gfx.fillRect(ox + 6, 7, 4, 2);
+      gfx.fillRect(ox + 7, 11, 2, 2);
+    }
 
     gfx.fillStyle(0x5c3a10);
-    gfx.fillRect(16, 0, 16, 16);
+    gfx.fillRect(48, 0, 16, 16);
     gfx.fillStyle(0x7a5020);
-    gfx.fillRect(17, 1, 14, 14);
+    gfx.fillRect(49, 1, 14, 14);
     gfx.fillStyle(0x3a2008);
-    gfx.fillRect(17, 1, 14, 1);
-    gfx.fillRect(17, 14, 14, 1);
-    gfx.fillRect(17, 1, 1, 14);
-    gfx.fillRect(30, 1, 1, 14);
+    gfx.fillRect(49, 1, 14, 1);
+    gfx.fillRect(49, 14, 14, 1);
+    gfx.fillRect(49, 1, 1, 14);
+    gfx.fillRect(62, 1, 1, 14);
 
-    gfx.generateTexture(ASSETS.COIN_BLOCK, 32, 16);
+    gfx.generateTexture(ASSETS.COIN_BLOCK, 64, 16);
     gfx.destroy();
 
     const tex = this.textures.get(ASSETS.COIN_BLOCK);
-    tex.add(0, 0,  0, 0, 16, 16);
-    tex.add(1, 0, 16, 0, 16, 16);
+    for (let i = 0; i < 4; i++) {
+      tex.add(i, 0, i * 16, 0, 16, 16);
+    }
   }
 
   // Flag zone: 1×1 px blanco — usado como hitzone invisible del mástil

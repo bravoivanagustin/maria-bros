@@ -21,7 +21,7 @@ export class Maria extends Entity {
 
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setSize(12, 14);
-    body.setOffset(2, 1);
+    body.setOffset(2, 2);
     body.setCollideWorldBounds(true);
 
     this.play(ANIMS.MARIA_IDLE);
@@ -107,6 +107,10 @@ export class Maria extends Entity {
     this.winWalkReady = false;
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setVelocityX(0);
+    // Solo colisionar con el suelo (abajo): se ignoran paredes y techos del área del mástil
+    body.checkCollision.up    = false;
+    body.checkCollision.left  = false;
+    body.checkCollision.right = false;
   }
 
   public takeDamage(): void {
@@ -130,17 +134,24 @@ export class Maria extends Entity {
     });
   }
 
-  /** Muerte por caída en un foso — no rebota, sigue cayendo */
+  /** Muerte por caída en un foso — congela brevemente y rebota hacia arriba */
   public fallIntoPit(): void {
-    if (this.mariaState === MariaState.DEAD) return;
+    if (this.mariaState === MariaState.DEAD || this.mariaState === MariaState.WINNING) return;
 
     this.changeState(MariaState.DEAD);
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocityX(0);
+
+    body.setVelocity(0, 0);
+    body.allowGravity = false;
     body.setCollideWorldBounds(false);
     body.checkCollision.none = true;
 
     this.scene.events.emit(EVENTS.PLAYER_DIED);
+
+    this.scene.time.delayedCall(400, () => {
+      body.allowGravity = true;
+      body.setVelocityY(PHYSICS.JUMP_VELOCITY);
+    });
   }
 
   private changeState(newState: MariaState): void {

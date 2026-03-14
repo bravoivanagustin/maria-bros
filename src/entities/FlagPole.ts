@@ -2,41 +2,50 @@ import { ASSETS, EVENTS, FLAG, FONTS } from '../utils/constants';
 
 export class FlagPole {
   private readonly scene: Phaser.Scene;
-  private readonly flagRect: Phaser.GameObjects.Rectangle;
+  private readonly flagImage: Phaser.GameObjects.Image;
   private readonly hitZone: Phaser.Physics.Arcade.Image;
+  private readonly poleHeight: number;
+  private readonly flagBottomY: number;
   private touched: boolean = false;
 
   readonly poleX: number;
   readonly poleTopY: number;
   readonly poleBottomY: number;
 
-  constructor(scene: Phaser.Scene, x: number, groundY: number) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    groundY: number,
+    poleHeight: number = FLAG.POLE_HEIGHT,
+    flagBottomY: number = groundY,
+  ) {
     this.scene = scene;
     this.poleX = x;
     this.poleBottomY = groundY;
-    this.poleTopY = groundY - FLAG.POLE_HEIGHT;
+    this.poleHeight = poleHeight;
+    this.flagBottomY = flagBottomY;
+    this.poleTopY = groundY - poleHeight;
 
-    // Bandera (arranca en la cima del mástil, encima del tile del poste)
-    this.flagRect = scene.add.rectangle(
-      x + FLAG.POLE_WIDTH / 2 + FLAG.FLAG_WIDTH / 2 + 1,
-      this.poleTopY + 4 + FLAG.FLAG_HEIGHT / 2,
-      FLAG.FLAG_WIDTH,
-      FLAG.FLAG_HEIGHT,
-      0xff4444,
+    // Bandera (arranca en la cima del mástil, la imagen PNG de 16×16 cuelga a la derecha del poste)
+    this.flagImage = scene.add.image(
+      x + FLAG.POLE_WIDTH / 2,        // borde izquierdo de la bandera = borde derecho del poste
+      this.poleTopY,                   // borde superior = cima del mástil
+      ASSETS.FLAG_IMAGE,
     );
+    this.flagImage.setOrigin(0, 0);   // anclar desde esquina superior-izquierda
 
     // Zona de colisión invisible que cubre todo el mástil
     const physics = scene.physics as unknown as Phaser.Physics.Arcade.ArcadePhysics;
     this.hitZone = physics.add.image(
       x,
-      this.poleTopY + FLAG.POLE_HEIGHT / 2,
+      this.poleTopY + poleHeight / 2,
       ASSETS.FLAG_ZONE,
     );
     this.hitZone.setAlpha(0);
     const body = this.hitZone.body as Phaser.Physics.Arcade.Body;
     body.allowGravity = false;
     body.setImmovable(true);
-    body.setSize(FLAG.POLE_WIDTH + 8, FLAG.POLE_HEIGHT);
+    body.setSize(4, poleHeight);
   }
 
   public getHitZone(): Phaser.Physics.Arcade.Image {
@@ -51,6 +60,9 @@ export class FlagPole {
     if (this.touched) return;
     this.touched = true;
 
+    // Desactivar hitZone para evitar cualquier interacción física posterior
+    (this.hitZone.body as Phaser.Physics.Arcade.Body).enable = false;
+
     const bonus = this.calculateBonus(mariaY);
     this.scene.events.emit(EVENTS.FLAG_BONUS, bonus);
     this.showBonusText(bonus);
@@ -62,8 +74,8 @@ export class FlagPole {
    * Divide el mástil en 5 zonas de igual altura.
    */
   private calculateBonus(mariaY: number): number {
-    const relativeY = Phaser.Math.Clamp(mariaY - this.poleTopY, 0, FLAG.POLE_HEIGHT);
-    const pct = relativeY / FLAG.POLE_HEIGHT;
+    const relativeY = Phaser.Math.Clamp(mariaY - this.poleTopY, 0, this.poleHeight);
+    const pct = relativeY / this.poleHeight;
 
     if (pct <= 0.2) return FLAG.BONUS_TOP;
     if (pct <= 0.4) return FLAG.BONUS_HIGH;
@@ -95,10 +107,11 @@ export class FlagPole {
 
   /** La bandera baja por el mástil; al terminar, emite LEVEL_WIN */
   private animateFlagDown(): void {
-    const targetY = this.poleBottomY - 4 - FLAG.FLAG_HEIGHT / 2;
+    // targetY = posición final con el borde superior de la imagen justo encima del suelo
+    const targetY = this.flagBottomY - 16 - 4;
 
     this.scene.tweens.add({
-      targets: this.flagRect,
+      targets: this.flagImage,
       y: targetY,
       duration: 1200,
       ease: 'Cubic.in',

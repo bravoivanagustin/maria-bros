@@ -7,6 +7,7 @@ import { GameScene } from './scenes/GameScene';
 import { TransitionScene } from './scenes/TransitionScene';
 import { WinScene } from './scenes/WinScene';
 import { GameOverScene } from './scenes/GameOverScene';
+import { EndingScene } from './scenes/EndingScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -35,6 +36,7 @@ const config: Phaser.Types.Core.GameConfig = {
     TransitionScene,
     WinScene,
     GameOverScene,
+    EndingScene,
   ],
 };
 

@@ -1,4 +1,5 @@
 import { GAME, SCENES, FONTS } from '../utils/constants';
+import { LevelRegistry } from '../config/LevelRegistry';
 import type { SceneTransitionData } from '../types';
 
 export class WinScene extends Phaser.Scene {
@@ -14,40 +15,30 @@ export class WinScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#000022');
 
     const score = data.score ?? 0;
+    const levelId = data.levelId ?? 'level1';
+    const nextLevelId = LevelRegistry.getNextLevelId(levelId);
 
-    // Mensaje principal
+    if (nextLevelId !== null) {
+      this.createIntermediateScreen(score, nextLevelId);
+      this.cameras.main.fadeIn(600);
+    } else {
+      this.scene.start(SCENES.ENDING, { score });
+    }
+  }
+
+  private createIntermediateScreen(score: number, nextLevelId: string): void {
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 50, 'LO LOGRASTE!', {
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 40, 'NIVEL COMPLETADO!', {
         fontFamily: FONTS.PIXEL,
-        fontSize: '16px',
-        color: '#ff69b4',
+        fontSize: '12px',
+        color: '#ffdd00',
         stroke: '#000000',
         strokeThickness: 3,
       })
       .setOrigin(0.5);
 
     this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 30, 'Rescataste a Agustin!', {
-        fontFamily: FONTS.PIXEL,
-        fontSize: '8px',
-        color: '#ffdd00',
-        stroke: '#000000',
-        strokeThickness: 2,
-      })
-      .setOrigin(0.5);
-
-    this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 10, 'Te amo, Maria', {
-        fontFamily: FONTS.PIXEL,
-        fontSize: '8px',
-        color: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 2,
-      })
-      .setOrigin(0.5);
-
-    this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 10, `SCORE FINAL: ${String(score).padStart(6, '0')}`, {
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 - 10, `SCORE: ${String(score).padStart(6, '0')}`, {
         fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#aaffaa',
@@ -56,9 +47,8 @@ export class WinScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // Botón volver al menú
-    const menuBtn = this.add
-      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 40, '[ Volver al menú ]', {
+    const btn = this.add
+      .text(GAME.WIDTH / 2, GAME.HEIGHT / 2 + 30, '[ Siguiente nivel ]', {
         fontFamily: FONTS.PIXEL,
         fontSize: '8px',
         color: '#ffffff',
@@ -68,20 +58,19 @@ export class WinScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
 
-    menuBtn.on('pointerover', () => menuBtn.setColor('#ff69b4'));
-    menuBtn.on('pointerout', () => menuBtn.setColor('#ffffff'));
-    menuBtn.on('pointerdown', () => this.goToMenu());
+    btn.on('pointerover', () => btn.setColor('#ffdd00'));
+    btn.on('pointerout', () => btn.setColor('#ffffff'));
+    btn.on('pointerdown', () => this.goToLevel(nextLevelId, score));
 
-    this.input.keyboard!.once('keydown-SPACE', () => this.goToMenu());
-    this.input.keyboard!.once('keydown-ENTER', () => this.goToMenu());
-
-    this.cameras.main.fadeIn(600);
+    this.input.keyboard!.once('keydown-SPACE', () => this.goToLevel(nextLevelId, score));
+    this.input.keyboard!.once('keydown-ENTER', () => this.goToLevel(nextLevelId, score));
   }
 
-  private goToMenu(): void {
+  private goToLevel(levelId: string, score: number): void {
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      this.scene.start(SCENES.MENU);
+      this.scene.start(SCENES.GAME, { levelId, score });
     });
   }
+
 }

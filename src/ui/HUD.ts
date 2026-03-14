@@ -21,7 +21,7 @@ export class HUD {
   ) {
     // Todos los textos son fijos a la cámara (setScrollFactor(0))
     this.nameText = scene.add
-      .text(GAME.WIDTH / 2, 4, 'MARÍA', HUD_STYLE)
+      .text(GAME.WIDTH / 2, 4, 'MARIA', HUD_STYLE)
       .setOrigin(0.5, 0)
       .setScrollFactor(0)
       .setDepth(100);

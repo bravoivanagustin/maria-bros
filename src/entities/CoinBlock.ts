@@ -1,4 +1,4 @@
-import { ASSETS, EVENTS } from '../utils/constants';
+import { ANIMS, ASSETS, EVENTS } from '../utils/constants';
 
 enum CoinBlockState {
   ACTIVE = 'ACTIVE',
@@ -19,8 +19,8 @@ export class CoinBlock extends Phaser.Physics.Arcade.Sprite {
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setImmovable(true);
     body.allowGravity = false;
-    body.setSize(14, 14);
-    body.setOffset(1, 1);
+
+    this.play(ANIMS.COIN_BLOCK_SPIN);
   }
 
   public get isActive(): boolean {
@@ -32,7 +32,8 @@ export class CoinBlock extends Phaser.Physics.Arcade.Sprite {
     if (this.blockState === CoinBlockState.USED) return;
     this.blockState = CoinBlockState.USED;
 
-    this.setFrame(1); // frame "usado"
+    this.stop();
+    this.setFrame(3); // frame "usado" (0-2 = activos, 3 = usado)
     this.animateBump();
     this.spawnCoinPopup();
     this.scene.events.emit(EVENTS.COIN_COLLECTED);
@@ -40,27 +41,30 @@ export class CoinBlock extends Phaser.Physics.Arcade.Sprite {
 
   private animateBump(): void {
     const originalY = this.y;
-    const body = this.body as Phaser.Physics.Arcade.Body;
+
+    // Usar imagen visual separada para la animación del bump.
+    // El sprite físico (con su body) permanece quieto — así María no es empujada.
+    // Phaser sincroniza sprite.y → body.y en preUpdate cada frame; si moviemos
+    // el sprite directamente, el body la sigue y puede causar glitch de colisión.
+    const visual = this.scene.add.image(this.x, originalY, ASSETS.COIN_BLOCK, 3);
+    visual.setDepth(this.depth + 0.1);
+    this.setVisible(false); // ocultamos el sprite físico durante la animación
 
     this.scene.tweens.add({
-      targets: this,
+      targets: visual,
       y: originalY - 6,
       duration: 80,
       ease: 'Quad.out',
       yoyo: true,
-      onUpdate: () => {
-        // Sincronizar el cuerpo físico con la posición del sprite
-        body.reset(this.x, this.y);
-      },
       onComplete: () => {
-        this.y = originalY;
-        body.reset(this.x, originalY);
+        visual.destroy();
+        this.setVisible(true);
       },
     });
   }
 
   private spawnCoinPopup(): void {
-    const coin = this.scene.add.rectangle(this.x, this.y - 8, 8, 8, 0xffdd00);
+    const coin = this.scene.add.image(this.x, this.y - 8, ASSETS.COIN, 0);
     coin.setDepth(3);
 
     this.scene.tweens.add({

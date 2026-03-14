@@ -2,6 +2,7 @@ export const ASSETS = {
   PLAYER: 'maria',
   PRINCESS: 'agustin',
   ENEMY_GOOMBA: 'goomba',
+  ENEMY_FISH: 'fish-enemy',
   COIN: 'coin',
   TILESET_WORLD1: 'tileset-world1',
   LEVEL1_MAP: 'level1-map',
@@ -13,15 +14,28 @@ export const ASSETS = {
   SFX_HURT: 'sfx-hurt',
   SFX_WIN: 'sfx-win',
   FLAG_ZONE: 'flag-zone',
+  FLAG_IMAGE: 'flag-image',
   COIN_BLOCK: 'coin-block',
+  BRICK_BLOCK: 'brick-block',
   BG_LEVEL1: 'bg-level1',
-  // Tilesets del nivel 1
-  TS_BLOQUES:   'ts-bloques',
-  TS_NUBES:     'ts-nubes',
-  TS_TILESET:   'ts-tileset',
-  TS_POSTE:     'ts-poste',
-  TS_TUBO_LAT:  'ts-tubo-lat',
-  TS_MONTANAS:  'ts-montanas',
+  LEVEL2_MAP: 'level2-map',
+  LEVEL3_MAP: 'level3-map',
+  // Tilesets
+  TS_BLOQUES: 'ts-bloques',
+  TS_NUBES: 'ts-nubes',
+  TS_POSTE: 'ts-poste',
+  TS_TUBO: 'ts-tubo',
+  TS_MONTANAS: 'ts-montanas',
+  TS_VERDE: 'ts-verde',
+  TS_PALOS: 'ts-palos',
+  TS_ARBOLES: 'ts-arboles',
+  TS_VERDE_2: 'ts-verde-2',
+  TS_AGUS: 'ts-agus',
+  TS_AGUS_2: 'ts-agus-2',
+  // Ending scene
+  MARIA_QUIETA: 'maria-quieta',
+  MARIA_BESO: 'maria-beso',
+  AGUS_BESO: 'agus-beso',
 } as const;
 
 export const EVENTS = {
@@ -47,6 +61,7 @@ export const ANIMS = {
   GOOMBA_DEAD: 'goomba-dead',
   COIN_SPIN: 'coin-spin',
   AGUSTIN_IDLE: 'agustin-idle',
+  COIN_BLOCK_SPIN: 'coinblock-spin',
 } as const;
 
 export const SCENES = {
@@ -57,6 +72,7 @@ export const SCENES = {
   WIN: 'WinScene',
   GAME_OVER: 'GameOverScene',
   TRANSITION: 'TransitionScene',
+  ENDING: 'EndingScene',
 } as const;
 
 export const PHYSICS = {
@@ -79,7 +95,7 @@ export const FONTS = {
 
 export const FLAG = {
   POLE_WIDTH: 4,
-  POLE_HEIGHT: 100,
+  POLE_HEIGHT: 160,
   FLAG_WIDTH: 12,
   FLAG_HEIGHT: 10,
   // Puntos según altura — cuanto más arriba, más puntos (como Mario original)

@@ -3,34 +3,104 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "bloques.tsx",
+    "activeFile": "level3.tmj",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
-        "bloques.tsx": {
+        "": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 824,
+                "y": 319.5
+            }
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#arboles": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#bloques": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#nubes": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#palos": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#poste": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#tubo": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#verde": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#verde2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json#verde_2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/verde2.tsx": {
             "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
+        "agua.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 11
+        },
+        "arboles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "bloques.tsx": {
+            "scaleInDock": 2,
             "scaleInEditor": 1.5
+        },
+        "bloques16x16.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
         },
         "level1.tmx": {
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 483,
-                "y": 210.5
+                "x": 640.5,
+                "y": 159.5
             }
         },
+        "level3.tmj": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 2467.909090909091,
+                "y": 150.63636363636363
+            }
+        },
+        "monedas.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
         "montañas.tsx": {
-            "scaleInDock": 0.25,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         },
         "nubes.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "palos.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "poste.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 11
         },
         "tileset.tsx": {
             "scaleInDock": 1,
@@ -38,42 +108,58 @@
         },
         "tubo.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 11
         },
         "tubo_lat.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "verde.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "verde2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "verde_2.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels",
     "last.externalTilesetPath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
-    "last.imagePath": "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/tilesets",
-    "map.height": 14,
+    "last.imagePath": "C:/Users/bravo/OneDrive/Desktop/robotica/diseño",
+    "map.height": 20,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
-    "map.lastUsedFormat": "tmx",
+    "map.lastUsedFormat": "json",
     "map.renderOrder": "2",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 60,
+    "map.width": 160,
     "openFiles": [
-        "bloques.tsx",
-        "tileset.tsx",
-        "nubes.tsx",
-        "montañas.tsx",
-        "poste.tsx",
-        "tubo.tsx",
-        "tubo_lat.tsx"
+        "level1.tmx",
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json",
+        "level3.tmj",
+        "palos.tsx",
+        "arboles.tsx",
+        "verde.tsx",
+        "verde_2.tsx"
     ],
     "project": "maria.tiled-project",
     "recentFiles": [
-        "tubo_lat.tsx",
-        "tubo.tsx",
-        "poste.tsx",
-        "montañas.tsx",
-        "nubes.tsx",
-        "tileset.tsx",
+        "agua.tsx",
+        "level1.tmx",
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/level2.json",
+        "verde_2.tsx",
+        "verde.tsx",
+        "arboles.tsx",
+        "palos.tsx",
+        "level3.tmj",
+        "verde2.tsx",
+        "C:/Users/bravo/OneDrive/Desktop/robotica/public/assets/tilemaps/levels/verde2.tsx",
         "bloques.tsx",
-        "level1.tmx"
+        "bloques16x16.tsx"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
@@ -83,6 +169,6 @@
         "height": 16,
         "width": 16
     },
-    "tileset.transparentColor": "#9393fe",
+    "tileset.transparentColor": "#9494ff",
     "tileset.useTransparentColor": false
 }

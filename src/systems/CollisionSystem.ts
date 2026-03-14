@@ -1,9 +1,12 @@
-import { EVENTS } from '../utils/constants';
+import { EVENTS, GAME } from '../utils/constants';
 import type { Maria } from '../entities/Maria';
+import { MariaState } from '../entities/Maria';
 import type { Goomba } from '../entities/enemies/Goomba';
 import type { Coin } from '../entities/collectibles/Coin';
 import type { CoinBlock } from '../entities/CoinBlock';
+import type { BrickBlock } from '../entities/BrickBlock';
 import type { FlagPole } from '../entities/FlagPole';
+import type { Fish } from '../entities/enemies/Fish';
 
 export class CollisionSystem {
   private hasWon: boolean = false;
@@ -13,15 +16,33 @@ export class CollisionSystem {
   public setup(
     maria: Maria,
     enemies: Phaser.Physics.Arcade.Group,
+    fish: Phaser.GameObjects.Group,
     coins: Phaser.Physics.Arcade.StaticGroup,
     coinBlocks: Phaser.GameObjects.Group,
+    brickBlocks: Phaser.GameObjects.Group,
     groundLayer: Phaser.Tilemaps.TilemapLayer,
     flagPole: FlagPole,
   ): void {
     const physics = this.scene.physics as unknown as Phaser.Physics.Arcade.ArcadePhysics;
 
-    // María vs suelo
-    physics.add.collider(maria, groundLayer);
+    // María vs suelo — durante WINNING ignora el bloque base del poste y cualquier
+    // tile decorativo del mástil en esa columna, para que caiga al suelo real.
+    const poleColX = Math.floor(flagPole.poleX / GAME.TILE_SIZE) * GAME.TILE_SIZE;
+    physics.add.collider(
+      maria,
+      groundLayer,
+      undefined,
+      (playerObj, tileObj) => {
+        if ((playerObj as Maria).getState() !== MariaState.WINNING) return true;
+        const tile = tileObj as Phaser.Tilemaps.Tile;
+        // Ignorar toda la fila base del poste (permite caer al suelo real)
+        if (tile.pixelY === flagPole.poleBottomY) return false;
+        // Ignorar tiles en la columna del poste por encima de la base (ej. tile decorativo row-1)
+        if (tile.pixelX === poleColX && tile.pixelY < flagPole.poleBottomY) return false;
+        return true;
+      },
+      this,
+    );
 
     // Enemigos vs suelo
     physics.add.collider(enemies, groundLayer);
@@ -54,6 +75,17 @@ export class CollisionSystem {
       this,
     );
 
+    // María vs peces — siempre daña (no se pueden pisotear)
+    physics.add.overlap(
+      maria,
+      fish,
+      (playerObj, fishObj) => {
+        (fishObj as Fish).onPlayerContact(playerObj as Maria);
+      },
+      undefined,
+      this,
+    );
+
     // María vs monedas flotantes
     physics.add.overlap(
       maria,
@@ -65,24 +97,39 @@ export class CollisionSystem {
       this,
     );
 
-    // María vs bloques de moneda — colisión sólida + detección desde abajo
+    // María vs bloques de moneda — colisión sólida + detección desde abajo.
+    // Se usa processCallback (dispara ANTES de la resolución física) para leer velocity.y,
+    // que ya es 0 en el callback principal después de la separación.
     physics.add.collider(
       maria,
       coinBlocks,
+      undefined,
       (playerObj, blockObj) => {
         const block = blockObj as CoinBlock;
-        if (!block.isActive) return;
-
+        if (!block.isActive) return true; // sólido pero sin activar
         const mariaBod = (playerObj as Maria).body as Phaser.Physics.Arcade.Body;
-
-        // Golpe desde abajo: la cabeza de María quedó bloqueada por el bloque.
-        // Se usa blocked.up porque velocity.y ya fue reseteada a 0 por Phaser
-        // antes de invocar este callback.
-        if (mariaBod.blocked.up) {
+        if (mariaBod.velocity.y < -50) {
           block.hit();
         }
+        return true; // siempre sólido
       },
+      this,
+    );
+
+    // María vs bloques rompibles — mismo patrón
+    physics.add.collider(
+      maria,
+      brickBlocks,
       undefined,
+      (playerObj, blockObj) => {
+        const block = blockObj as BrickBlock;
+        if (!block.isBreakable) return true;
+        const mariaBod = (playerObj as Maria).body as Phaser.Physics.Arcade.Body;
+        if (mariaBod.velocity.y < -50) {
+          block.hit();
+        }
+        return true;
+      },
       this,
     );
 

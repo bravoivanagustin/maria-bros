@@ -1,8 +1,12 @@
 import { level1 } from '../levels/level1';
+import { level2 } from '../levels/level2';
+import { level3 } from '../levels/level3';
 import type { LevelConfig } from '../types';
 
 const levels: Map<string, LevelConfig> = new Map([
   ['level1', level1],
+  ['level2', level2],
+  ['level3', level3],
 ]);
 
 export class LevelRegistry {
